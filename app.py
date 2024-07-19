@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response, abort, redirect, url_for
+from flask import Flask, render_template, request, Response, abort, redirect
 from os import path, getcwd, chdir
 from libs.pixadd import create_cob, get_cob
 from libs.db import *
@@ -9,7 +9,7 @@ from libs.relay.acrive import *
 
 app = Flask(__name__)
 
-chdir('/home/kuro/change')
+chdir(r"C:\prg\change")
 app.template_folder = getcwd() + r'/tamplante' 
 app.static_folder   = getcwd() + r'/static'
 print(app.static_folder ,
@@ -119,20 +119,21 @@ def pix(pedido_id):
    abort(404)
 
 # server APi
-@app.route('/pixcheck/<idPix>')
-def pixcheck(idPix):
-    def generate_data():
-        config = dotenv_values(".env")
-        appid  = config['APP_ID']
-        while True:
-            ultima_trastion = get_cob(appid, idPix)
-            status = ultima_trastion['charge']['status']  
-            if status != 'ACTIVE':
-               update_value('status_pagamento',True,f'pix_id = {idPix}')
-            yield 'data: {}\n\n'.format(status)
-            sleep(2)  # Espera 2 segundo antes de generar el próximo dato
+#@app.route('/pixcheck/<idPix>')
+#def pixcheck(idPix):
+#    def generate_data():
+#        config = dotenv_values(".env")
+#        appid  = config['APP_ID']
+#        while True:
+#            ultima_trastion = get_cob(appid, idPix)
+#            status = ultima_trastion['charge']['status']  
+#            if status != 'ACTIVE':
+#               update_value('status_pagamento',True,f'pix_id = {idPix}')
+#            yield 'data: {}\n\n'.format(status)
+#            sleep(2)
+# Espera 2 segundo antes de generar el proximo dato
 
-    return Response(generate_data(), mimetype='text/event-stream', headers={'Cache-Control': 'no-cache'})
+#   return Response(generate_data(), mimetype='text/event-stream', headers={'Cache-Control': 'no-cache'})
 
 @app.route('/complete')
 def completestatus():
@@ -145,7 +146,7 @@ def completestatus():
       horas = segundos // 3600
       minutos = (segundos % 3600) // 60
       segundos_restantes = segundos % 60
-      return f"{pad(horas)}:{pad(minutos)}:{pad(segundos_restantes)}"
+      return "{pad(horas)}:{pad(minutos)}:{pad(segundos_restantes)}"
 
    def pad(numero):
       return str(numero).zfill(2)
@@ -157,7 +158,7 @@ def completestatus():
             registro = view_pedido(pedido_id) 
 
             if registro[-3] == "00:00:00":
-               update_value('status_carga',True, f"pedido_id = {pedido_id}")
+               update_value('status_carga',True, "pedido_id = {pedido_id}")
                control_relay().stop()
             else:
                seg = tiempo_a_segundos(registro[-3])
@@ -165,7 +166,7 @@ def completestatus():
                control_relay().stop()
 
                print(timeformat)
-               update_value('tiempo_carga', f"\'{timeformat}\'", f"pedido_id = {pedido_id}")
+               update_value('tiempo_carga', "\'{timeformat}\'", "pedido_id = {pedido_id}")
             print(registro)
             print(pedido_id)
 
