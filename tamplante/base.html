@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+  </head>
+  <body {% block onload %}{% endblock %}>
+    <nav>
+      {% if request.path  != '/' %}
+          
+        <div id="back" class="back plain-text">
+          <a href="/">
+            <span class="material-symbols-outlined">
+              arrow_back
+            </span>
+          </a>
+        </div>
+      {% endif %}    
+    </nav>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+   
+    <script src="{{ url_for('static', filename='script.js') }}">
+
+        {% block script %}
+        {% endblock %}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+        <div class="counter">
+            
+            <button style="border:none; background-color:#f5f5f500;font-size: 20px;" class="red" onclick="resetTime()"> 
+             
+                limpar
+                <!-- <span class="material-symbols-outlined">
+                   close
+                 </span> -->
+            </button>
+            <span id="counter">00:00:00</span>
+            <a id="sendLink" href="#" class="plain-text great">
+
+                pagar
+                <!-- <span class="material-symbols-outlined">
+                    done
+                </span> -->
+                
+            </a>
+        </div>
+        <h2>Escolha o tempo de carregamento</h2>
+        <div class="buttons-container">
+            <button class="button" onclick="incrementTime(1800)">+ 30 min</button>
+            <button class="button" onclick="incrementTime(5400)">+ 1 h 30 min</button>
+            <button class="button" onclick="incrementTime(7200)">+ 2 h</button>
+            <a  href="{{ url_for('button') }}" class="button plain-text">Personalizado</a>
+        </div>
+    </div>
+{% endblock %}
+
