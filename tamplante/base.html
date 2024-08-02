@@ -12,18 +12,7 @@
     {% endblock %}
   </head>
   <body {% block onload %}{% endblock %}>
-    <nav>
-      {% if request.path  != '/' %}
-          
-        <div id="back" class="back plain-text">
-          <a href="/">
-            <span class="material-symbols-outlined">
-              arrow_back
-            </span>
-          </a>
-        </div>
-      {% endif %}    
-    </nav>
+   
     <div id="content">
         {% block content %}
         {% endblock %}

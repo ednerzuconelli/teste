@@ -16,6 +16,7 @@ let caracteres   = textoInicial.split('');
 let contador_t   = caracteres.length -1;
 
 function incrementTime(secondsToAdd) {
+    console.log('passou aqui');
     totalSeconds += secondsToAdd;
     if (totalSeconds > MAX_SECONDS) {
         totalSeconds = MAX_SECONDS;
@@ -132,6 +133,8 @@ function resetCounter() {
     contador_t = caracteres.length -1;
 }
 
+
+
 function addNumber(num) {
     if (contador_t != -1 && caracteres[contador_t] != ':'  ) {
         let temp = caracteres[contador_t]; // Guardamos el valor actual en una variable temporal
@@ -154,7 +157,7 @@ function addNumber(num) {
 }
 
 function pix(total, pedido_id) {
-    window.location.href = `pix/${pedido_id}`
+    window.location.href = '/pix/${pedido_id}`
 }
 
 function completeStatusCarga() {
@@ -204,11 +207,6 @@ function startcronometro() {
         document.getElementById('startButton').remove()
         document.getElementById('back').remove()
         document.getElementById('intruciones').remove()
-        
-
-       
-
-
     }
 };
 
@@ -220,3 +218,5 @@ if (queryString.includes("startauto")) {
     // Llama a la función si estás en la página deseada y el parámetro existe
     startcronometro();
 }
+
+

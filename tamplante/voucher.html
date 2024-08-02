@@ -1,0 +1,70 @@
+
+{% extends "base.html" %}
+{% block title %}Voucher{% endblock %}
+{% block content %}
+<script>
+    function inserir(numero) {
+      let text = document.querySelector("[name='voucher']").value + numero;
+      text = text.replace(/\D/g, "")
+      text = text.replace(/(\d)(\d{4})$/, "$1.$2")
+      text = text.replace(/(\d)(\d{4})$/, "$1.$2")
+        
+      document.querySelector("[name='voucher']").value = text;
+    }
+    function deletarUltimo() {
+      let text = document.querySelector("[name='voucher']").value ;
+      document.querySelector("[name='voucher']").value = text.substring(0,text.length-1);
+    }
+    function reset() {
+      let text = '' ;
+      document.querySelector("[name='voucher']").value = text;
+    }
+</script>  
+<nav>
+  {% if request.path  != '/' %}
+      
+    <div id="back" class="back plain-text">
+      <a href="/tipopagamento">
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </a>
+    </div>
+  {% endif %}    
+</nav>  
+<div class="grid-container">
+    <div class="container ">
+        
+        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+
+        <input type="text" class="input" id="voucher" name="voucher" maxlength="20" >
+        <div class="info-container div">
+        <a class="button-fone  plain-text"  href="/tipopagamento">Voltar</a>
+        <p class="button-fone" href="/cheking">Validar</p>
+        </div>
+
+    </div>
+    <div class="teclado">
+        <button class="button" onclick="inserir(1)">1</button>
+        <button class="button" onclick="inserir(2)">2</button>
+        <button class="button" onclick="inserir(3)">3</button>
+        <button class="button" onclick="inserir(4)">4</button>
+        <button class="button" onclick="inserir(5)">5</button>
+        <button class="button" onclick="inserir(6)">6</button>
+        <button class="button" onclick="inserir(7)">7</button>
+        <button class="button" onclick="inserir(8)">8</button>
+        <button class="button" onclick="inserir(9)">9</button>
+  
+        <button class="button" onclick="deletarUltimo()"><-</button>
+        <button class="button" onclick="inserir(0)">0</button>
+        <button class="button" onclick="reset()">C</button>
+    </div>
+  </div>   
+   
+   
+   
+    
+
+
+
+{% endblock %}

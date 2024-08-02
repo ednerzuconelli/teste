@@ -1,9 +1,10 @@
 
 {% extends "base.html" %}
-{% block title %}Pix{% endblock %}
+{% block title %}Carregamento{% endblock %}
 {% block content %}
 
 <div class="container">
+    <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
     <h2>Muito obrigado pela sua escolha.</h2>
 
     <div  class="counter">
@@ -12,7 +13,7 @@
     
     <h3 id="intruciones" >Pegue o carregador, coloque-o no carro e pressione o botão Iniciar.</h3>
 
-    <button class="button top" onclick="startcronometro()" id="startButton" >Iniciar</button>
+    <button class="button-fone " onclick="startcronometro()" id="startButton" >Iniciar</button>
 </div>
 
 {% endblock %}

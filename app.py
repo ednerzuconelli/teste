@@ -17,6 +17,15 @@ print(app.static_folder ,
 
 @app.route('/')
 def home():
+   return render_template('fone.html')
+@app.route('/tipopagamento')
+def tipopagamento():
+   return render_template('tipopagamento.html')
+@app.route('/voucher')
+def voucher():
+   return render_template('voucher.html', img='voucher.jpg')
+@app.route('/tempo')
+def tempo():
 
    pedido_id = ultimo_registro()
    print(pedido_id)
@@ -30,6 +39,7 @@ def home():
          
 
    return render_template('page.html')
+
 
 @app.route('/btn')
 def button():

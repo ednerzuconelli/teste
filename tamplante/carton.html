@@ -1,31 +1,65 @@
-
 {% extends "base.html" %}
-{% block title %}Pix{% endblock %}
+{% block title %}Cartao{% endblock %}
 {% block content %}
-    <div class="container">
-        <div  class="counter">
-            <p id="display">00:59:00</p>
+<div class="grid-container">
+    <div class="container ">
 
-        </div>
-        <img src="{{ url_for('static', filename='nfc.jpg' ) }}" class="qr" alt="">
+        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
 
+        <div class="voucher ">
         <p>{{ total_pagar }} R$</p>
+        <p>Número do Cartão</p>
+        <input type="text" class="input" id="numerocartao" name="voucher" maxlength="20"placeholder="(00) 00000-0000">
+        <div class="dado-cartao">
+            <div>
+                <p>Validade</p>
+                <input type="text" class="input-vencimento" id="validade" name="voucher" maxlength="20" placeholder="00/00">
+            </div>
+            <div>
+                <p>Codigo de Segurança</p>
+                <input type="text" class="input-codigo" id="codigoseguranca" name="voucher" maxlength="3">
+            </div>
+        </div> 
+        </div>
+        <div class="info-container div">
+        <a class="button-fone  plain-text " href="/cheking">Voltar</a>
 
+        <a id="sendLink" href="/cheking" class="button-fone plain-text ">
+            Avançar
+        </a>
     </div>
-    <script src="{{ url_for('static', filename='cro.js') }}"></script>
+    </div>
+    <div class="teclado">
+        <button class="button" onclick="incrementTime(1)">1</button>
+        <button class="button" onclick="incrementTime(2)">2</button>
+        <button class="button" onclick="incrementTime(3)">3</button>
+        <button class="button" onclick="incrementTime(4)">4</button>
+        <button class="button" onclick="incrementTime(5)">5</button>
+        <button class="button" onclick="incrementTime(6)">6</button>
+        <button class="button" onclick="incrementTime(7)">7</button>
+        <button class="button" onclick="incrementTime(8)">8</button>
+        <button class="button" onclick="incrementTime(9)">9</button>
 
-   
-    <script>
-        const eventSource = new EventSource('/pixcheck/{{ ID }}');
+        <button class="button" onclick="deletarUltimo()"><- </button>
+                <button class="button" onclick="incrementTime(0)">0</button>
+                <button class="button" onclick="reset()">C</button>
+    </div>
 
-        eventSource.onmessage = function(event) {
-            const newData = document.createElement('div');
-            newData.textContent = 'Server Time: ' + event.data;
-            if ( event.data === 'COMPLETED'){
-                window.location.href = '/timer/{{ pedido_id }}'
-            }
-        };
-    </script>
+</div>
+
+
+
+<script>
+    const eventSource = new EventSource('/pixcheck/{{ ID }}');
+
+    eventSource.onmessage = function (event) {
+        const newData = document.createElement('div');
+        newData.textContent = 'Server Time: ' + event.data;
+        if (event.data === 'COMPLETED') {
+            window.location.href = '/timer/{{ pedido_id }}'
+        }
+    };
+</script>
 </body>
 
 

@@ -5,6 +5,7 @@ body {
 .top {
     margin-top: 12em !important;
 }
+
 #counter {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 34px;
@@ -13,11 +14,19 @@ body {
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, 500px);
+    grid-gap: 1px;
     justify-content: center;
-    margin-top: 20px;
-    padding: 7rem 15rem;
+    margin-top: 10px;
+    padding: 1rem 2rem;
+
+}
+.teclado {
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    justify-content: center;
+    margin-top: 80px;
+    padding-left: 3rem;
 }
 .button {
     background-color: lightgreen;
@@ -29,22 +38,92 @@ body {
     margin-right: 30px;
     font-size: 20px;
 }
-
+.dado-cartao{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    margin-top: 10px;
+    padding-left: 1rem;
+}
 
 .counter {
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 24px;
+    margin: 70px;
 }
+
 
 .container {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 70px;
+    margin-bottom: 70px;
 }
+.button-fone {
+    margin-top: 2em !important;
+    background-color: lightgreen;
+    border: 2px solid green;
+    border-radius: 20px;
+    padding:30px 60px;
+    cursor: pointer;
+    font-size: 30px;
+    margin: auto;
+    max-width: 400px;
+}
+.input {
+    width: 400px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    font-size: 36px;
+    
+}
+.input-vencimento {
+    width: 200px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    font-size: 36px;
+    
+}
+.input-codigo {
+    width: 100px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    font-size: 36px;
+    
+}
+#phone, .btn {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+.btn {
+    color: #ffffff;
+    background-color: #428BCA;
+    border-color: #357EBD;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .btn:focus, .btn:hover {
+    background-color: #3276B1;
+    border-color: #285E8E;
+  } 
+  .btn:active {
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+  }
 .image {
-    width: 724px;
+    width: 524px;
     height: 348px;
-    display: block;
-    margin: -44px auto;
+   
+    margin: -84px auto;
 }
 
 .qr{
@@ -61,7 +140,19 @@ body {
     margin-top: 20px;
     margin-left: 9rem;
     margin-right: 9rem;
+    text-align: center;
 }
+.buttons-pagamento{
+    
+    margin-top: 80px;
+ }
+ .forma-pagamento{
+    display: inline-flexbox;
+   
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+ }
 
 .plain-text {
     text-decoration: none;
@@ -80,19 +171,16 @@ body {
 .info-container div {
     margin: 10px;
 }
-.button {
-    background-color: lightgreen;
-    border: 2px solid green;
-    border-radius: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-right: 30px;
-}
+
 .center{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.voucher{
+    display:grid;
+    justify-content: center;
+    align-items: center; 
 }
 .text-1 {
     font-size: 18px;
@@ -127,7 +215,9 @@ footer {
 } 
 
 .great{
-    color: #5af833b5;
+    color: #074733;
+    font-size: 35px;
+    padding: 1rem;
 }
 .error {
     text-align:center ;
@@ -141,7 +231,7 @@ footer {
     left: 5em;
     top: 5em;
     border-radius: 36%;
-    padding: 10px;
+    padding: 40px;
     /*box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;*/
 
 

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Tipopagamento{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="styles.css" />
+  <nav>
+    {% if request.path  != '/' %}
+        
+      <div id="back" class="back plain-text">
+        <a href="/">
+          <span class="material-symbols-outlined">
+            arrow_back
+          </span>
+        </a>
+      </div>
+    {% endif %}    
+  </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container forma-pagamento">
+        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+        
+        <h1 class ="center counter">Forma de Pagamento</h1>
+        
+        <div class="buttons-pagamento">
+          <a class="button-fone  plain-text"  href="/">Voltar</a>
+          <a class="button-fone  plain-text"  href="/voucher">Voucher</a>
+          
+          <a class="button-fone  plain-text" href="{{ url_for('tempo') }}" >Comprar</a>
+        </div>
+     
+             
+      
+    </div>
+{% endblock %}

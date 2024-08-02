@@ -1,8 +1,8 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 user=$(whoami)
 cw=$(pwd)
-files=('.env' 'database.ini')
+files=('env' 'database.ini')
 echo "start config"
 
 echo "username: $user" 

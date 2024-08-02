@@ -1,40 +1,90 @@
 
 {% extends "base.html" %}
-{% block title %}Inicio{% endblock %}
+{% block title %}Tempo{% endblock %}
 {% block head %}
   {{ super() }}
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <meta charset="UTF-8"> 
+  <script >
+ let totalSeconds = 0;
+const MAX_SECONDS = 86400; // 24 horas en segundos  
+function incrementTime(secondsToAdd) {
+    totalSeconds += secondsToAdd;
+    if (totalSeconds > MAX_SECONDS) {
+        totalSeconds = MAX_SECONDS;
+    }
+    updateCounter();
+    updateSendLink();
+}
+
+function resetTime() {
+    totalSeconds = 0;
+    updateCounter();
+    updateSendLink();
+}
+
+function updateSendLink() {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    if (`${seconds}` != '00' || `${minutes}` != '00' || `${hours}` != '00') {
+          sendLinkElement.href = `cheking?hours=${hours}&min=${minutes}&seg=${seconds}`;
+    } else {
+        counterElement.classList.add('red');
+        console.log(counterElement.className)
+    }
+}
+
+function updateCounter() {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    counterElement.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
+function pad(num) {
+    return num.toString().padStart(2, '0');
+}
+
+  </script>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+<div class="grid-container">
+    <div class="container ">
+        
         <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
-        <div class="counter">
+        <h2 class ="center">Tempo de carregamento</h2>
+        <div class="counter ">
+            <span id="counter">00:05:00</span>
             
-            <button style="border:none; background-color:#f5f5f500;font-size: 20px;" class="red" onclick="resetTime()"> 
-             
-                limpar
-                <!-- <span class="material-symbols-outlined">
-                   close
-                 </span> -->
-            </button>
-            <span id="counter">00:00:00</span>
-            <a id="sendLink" href="#" class="plain-text great">
+            <button class="button " onclick="incrementTime(1800)">+ 30 min</button>
+            
+        </div>
+        
 
-                pagar
-                <!-- <span class="material-symbols-outlined">
-                    done
-                </span> -->
-                
-            </a>
-        </div>
-        <h2>Escolha o tempo de carregamento</h2>
-        <div class="buttons-container">
-            <button class="button" onclick="incrementTime(1800)">+ 30 min</button>
-            <button class="button" onclick="incrementTime(5400)">+ 1 h 30 min</button>
-            <button class="button" onclick="incrementTime(7200)">+ 2 h</button>
-            <a  href="{{ url_for('button') }}" class="button plain-text">Personalizado</a>
-        </div>
+          <a class="button-fone  plain-text"  href="/tipopagamento">Voltar</a>
+          
+          <a id="sendLink" href="/cheking" class="button-fone plain-text">
+           Avançar
+        </a>
+         
+      
     </div>
+    <div class="teclado">
+        <button class="button" onclick="incrementTime(1)">1</button>
+        <button class="button" onclick="incrementTime(2)">2</button>
+        <button class="button" onclick="incrementTime(3)">3</button>
+        <button class="button" onclick="incrementTime(4)">4</button>
+        <button class="button" onclick="incrementTime(5)">5</button>
+        <button class="button" onclick="incrementTime(6)">6</button>
+        <button class="button" onclick="incrementTime(7)">7</button>
+        <button class="button" onclick="incrementTime(8)">8</button>
+        <button class="button" onclick="incrementTime(9)">9</button>
+  
+        <button class="button" onclick="deletarUltimo()"><-</button>
+        <button class="button" onclick="incrementTime(0)">0</button>
+        <button class="button" onclick="reset()">C</button>
+    </div>
+    
+</div>    
 {% endblock %}
 

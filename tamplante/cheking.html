@@ -3,7 +3,10 @@
 {% block title %}Inicio{% endblock %}
 {% block content %}
 <body>
-    <div class="center">
+  
+    <div class="container forma-pagamento">
+        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+          <div class="center">
         <h2 >Informação de pagamento</h2>
 
     </div>
@@ -26,10 +29,12 @@
 
 <div class="center">
 
-    <button class="button" onclick="pix({{ total }}, {{ pedido_id }})">Pix</button>
-    <!--
-    <a class="button plain-text" href="/carton" >cartão de porta</a>
-    -->
-</div>
+    <a class="button  plain-text"  href="/tempo">Voltar</a>
 
+    <button class="button" onclick="pix({{ total }}, {{ pedido_id }})">Pix</button>
+    
+    <a class="button plain-text" href="/carton" >Cartão</a>
+   
+</div>
+    </div>
 {% endblock %}
