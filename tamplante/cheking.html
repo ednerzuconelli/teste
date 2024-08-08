@@ -12,6 +12,9 @@
     function pix(total, pedido_id) {
         window.location.href =`/pix/${pedido_id}`
     }
+    function carton(total, pedido_id) {
+        window.location.href =`/carton/${pedido_id}`
+    }
 </script>
 {% endblock %}
 {% block content %}
@@ -44,7 +47,7 @@
 
         <button class="button" onclick="pix({{ total }}, {{ pedido_id }})">Pix</button>
 
-        <a class="button plain-text" href="/carton">Cartão</a>
+        <button class="button plain-text" onclick="carton({{total}},{{pedido_id}})">Cartão</button>
 
     </div>
 </div>

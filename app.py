@@ -79,9 +79,12 @@ def tempo():
 def button():
    return render_template('btn.html')
 
-@app.route('/carton')
-def carton():
-    return render_template('carton.html', img='nfc.jpg')
+@app.route('/carton/<pedido_id>')
+def carton(pedido_id):
+    pedido = view_pedido(pedido_id)
+    total  = str(pedido[-4]).replace(',', '') 
+    return render_template('carton.html', total_pagar='%.2f' % float(total)
+                           ,  img='nfc.jpg')
 
 @app.route('/timer/<int:pedido_id>')
 def timer(pedido_id):
@@ -137,7 +140,7 @@ def pix(pedido_id):
    if total != '0.00':
       if path.exists(".env"):   
          config = dotenv_values(".env")
-     # if path.exists("env"):   
+      #if path.exists("env"):   
       #   config = dotenv_values("env")
          appid = config['APP_ID']
         

@@ -6,6 +6,7 @@
         let text = document.querySelector("[name='voucher']").value+numero;
         text = text.replace(/\D/g, ''); // Remove caracteres não numéricos;
         text = text.replace(/^(\d{0,2})(\d{0,2})/, '$1/$2'); // Adiciona a barra após os 2 primeiros dígitos
+        text = text.substring(0,5)
         document.querySelector("[name='voucher']").value = text;
     }
     function deletarUltimo() {
@@ -15,6 +16,11 @@
     function reset() {
       let text = '' ;
       document.querySelector("[name='voucher']").value = text;
+    }
+    function timer() {
+        var url_atual = window.location.pathname.split('/');
+        var pedido_id = url_atual[2]
+        window.location.href = '/timer/'+ pedido_id
     }
 </script>
 <div class="grid-container">
@@ -42,7 +48,7 @@
         <div class="info-container div">
             <a class="button-fone  plain-text " href="/cheking">Voltar</a>
 
-            <a id="sendLink" href="/cheking" class="button-fone plain-text ">
+            <a id="sendLink" onclick="timer()" class="button-fone plain-text ">
                 Avançar
             </a>
         </div>
@@ -67,17 +73,7 @@
 
 
 
-<script>
-    const eventSource = new EventSource('/pixcheck/{{ ID }}');
 
-    eventSource.onmessage = function (event) {
-        const newData = document.createElement('div');
-        newData.textContent = 'Server Time: ' + event.data;
-        if (event.data === 'COMPLETED') {
-            window.location.href = '/timer/{{ pedido_id }}'
-        }
-    };
-</script>
 </body>
 
 
