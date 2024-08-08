@@ -1,40 +1,51 @@
-
 {% extends "base.html" %}
-{% block title %}Inicio{% endblock %}
+{% block title %}Pagamento{% endblock %}
+{% block head %}
+{{ super() }}
+<meta charset="UTF-8">
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+
+<script>
+    function pix(total, pedido_id) {
+        window.location.href =`/pix/${pedido_id}`
+    }
+</script>
+{% endblock %}
 {% block content %}
-<body>
-  
-    <div class="container forma-pagamento">
-        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
-          <div class="center">
-        <h2 >Informação de pagamento</h2>
+<div class="container forma-pagamento">
+    <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+    <div class="center">
+        <h2>Informação de pagamento</h2>
 
     </div>
 
-<div class="info-container text-1">
-    
-    <div>
-        <p>duração do carregamento:</p>
-        <p>montante a ser pago:</p>
+    <div class="info-container text-1">
+
+        <div>
+            <p>duração do carregamento:</p>
+            <p>montante a ser pago:</p>
+        </div>
+        <div>
+            <p>{{ time }}</p>
+            <p>R$ {{ total }}</p>
+        </div>
     </div>
-    <div>
-        <p>{{ time }}</p>
-        <p>R$ {{ total }}</p>
+    <div class="center">
+        <h3>Escolha a forma de pagamento</h3>
+
+    </div>
+
+    <div class="center">
+
+        <a class="button  plain-text" href="/tempo">Voltar</a>
+
+        <button class="button" onclick="pix({{ total }}, {{ pedido_id }})">Pix</button>
+
+        <a class="button plain-text" href="/carton">Cartão</a>
+
     </div>
 </div>
-<div class="center">
-    <h3>Escolha a forma de pagamento</h3>
-
-</div>
-
-<div class="center">
-
-    <a class="button  plain-text"  href="/tempo">Voltar</a>
-
-    <button class="button" onclick="pix({{ total }}, {{ pedido_id }})">Pix</button>
-    
-    <a class="button plain-text" href="/carton" >Cartão</a>
-   
-</div>
-    </div>
 {% endblock %}

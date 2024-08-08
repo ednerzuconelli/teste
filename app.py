@@ -9,9 +9,13 @@ from libs.relay.acrive import *
 
 app = Flask(__name__)
 
-chdir(r"C:\prg\change")
+chdir('/home/kuro/change')
 app.template_folder = getcwd() + r'/tamplante' 
 app.static_folder   = getcwd() + r'/static'
+
+#chdir(r"C:\\prg\\change")
+#app.template_folder = getcwd() + r'\\tamplante' 
+#app.static_folder   = getcwd() + r'\\static'
 print(app.static_folder ,
       app.template_folder)
 
@@ -20,7 +24,37 @@ def home():
    return render_template('fone.html')
 @app.route('/tipopagamento')
 def tipopagamento():
-   return render_template('tipopagamento.html')
+   telefone = request.args.get('telefone')
+   if not telefone:
+        telefone ='00 0000-0000'
+   
+
+   resultado = ''.join(filter(lambda i: i if i.isdigit() else None, telefone))
+ 
+   date = datetime.now()
+  
+   # ['%d/%m/%Y,  %H:%M:%S']
+   date_row = date.strftime('%d/%m/%Y %H:%M:%S').split(' ')
+
+   hora     = 00
+   minutos  = 00
+   segundos = 00 
+   
+   carga = "{:02d}:{:02d}:{:02d}".format(
+                          int(hora), int(minutos), int(segundos))
+
+   totalseg = hora * 3600 + minutos * 60 + segundos
+   total_pagar = 0
+   total_pagar = '%.2f' % float(total_pagar) 
+   # save pedido
+   if telefone_cadastrado(resultado) == None:
+      create_pedido(date_row[0],date_row[1], carga, totalseg, total_pagar,resultado,0)
+      
+   pedido_id = ultimo_registro()
+   print(pedido_id)	
+   return render_template('tipopagamento.html', telefone=telefone)
+   
+
 @app.route('/voucher')
 def voucher():
    return render_template('voucher.html', img='voucher.jpg')
@@ -38,7 +72,7 @@ def tempo():
                                  startauto='true'))
          
 
-   return render_template('page.html')
+   return render_template('tempo.html')
 
 
 @app.route('/btn')
@@ -55,7 +89,7 @@ def timer(pedido_id):
       print(start)
       info = view_pedido(pedido_id)
       print(info)
-      return render_template('timer.html', Time=info[-3])
+      return render_template('timer.html', Time=info[-5])
 
 
 @app.route('/cheking')
@@ -77,12 +111,16 @@ def show_post():
                           int(hora), int(minutos), int(segundos))
 
    totalseg = hora * 3600 + minutos * 60 + segundos
-   total_pagar = totalseg / 800 # 60 seg valeria 0,75 reales
+   
+   total_pagar = totalseg / 240 # 60 seg valeria 0,25 reales
    total_pagar = '%.2f' % float(total_pagar) 
    # save pedido
-   create_pedido(date_row[0],date_row[1], carga, totalseg, total_pagar)
    pedido_id = ultimo_registro()
    print(pedido_id)	
+   update_value('valor',total_pagar, "pedido_id = "+str(pedido_id))
+   update_value('segundo_total',totalseg, "pedido_id = "+str(pedido_id))
+   update_value('tiempo_carga',f"\'{carga}\'", "pedido_id = "+str(pedido_id))   
+   
    if total_pagar != '0':
       return render_template('cheking.html', 
                              time=carga,
@@ -94,21 +132,22 @@ def show_post():
 @app.route('/pix/<pedido_id>')
 def pix(pedido_id):
    pedido = view_pedido(pedido_id)
-   print(pedido)
-
-   total  = str(pedido[-2]).replace(',', '')
-   print(total)
-
+   total  = str(pedido[-4]).replace(',', '')
+   print('total '+total)
    if total != '0.00':
-      print(pedido)
       if path.exists(".env"):   
          config = dotenv_values(".env")
+     # if path.exists("env"):   
+      #   config = dotenv_values("env")
          appid = config['APP_ID']
+        
          pix = (0,pedido[1])
+         print(pix[1])
          if pix[1] == None:
-            pix = create_cob(appid, total, cometdv='')
+            print(appid)
+            pix = create_cob(appid, total.replace('.','')+'0', cometdv='')
             add_pix_id(pedido_id, pix[1])
-         print(pix)
+        
          cob = get_cob(appid, pix[1])
          print(cob)
 	
@@ -129,21 +168,22 @@ def pix(pedido_id):
    abort(404)
 
 # server APi
-#@app.route('/pixcheck/<idPix>')
-#def pixcheck(idPix):
-#    def generate_data():
-#        config = dotenv_values(".env")
-#        appid  = config['APP_ID']
-#        while True:
-#            ultima_trastion = get_cob(appid, idPix)
-#            status = ultima_trastion['charge']['status']  
-#            if status != 'ACTIVE':
-#               update_value('status_pagamento',True,f'pix_id = {idPix}')
-#            yield 'data: {}\n\n'.format(status)
-#            sleep(2)
-# Espera 2 segundo antes de generar el proximo dato
+@app.route('/pixcheck/<idPix>')
+def pixcheck(idPix):
+    def generate_data():
+        config = dotenv_values(".env")
+        #config = dotenv_values("env")
+        appid  = config['APP_ID']
+        while True:
+            ultima_trastion = get_cob(appid, idPix)
+            status = ultima_trastion['charge']['status']  
+            if status != 'ACTIVE':
+               update_value('status_pagamento',True,f'pix_id = {idPix}')
+            yield 'data: {}\n\n'.format(status)
+            sleep(2)  # Espera 2 segundo antes de generar el próximo dato
 
-#   return Response(generate_data(), mimetype='text/event-stream', headers={'Cache-Control': 'no-cache'})
+    return Response(generate_data(), mimetype='text/event-stream', headers={'Cache-Control': 'no-cache'})
+      
 
 @app.route('/complete')
 def completestatus():

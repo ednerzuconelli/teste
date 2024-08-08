@@ -3,12 +3,16 @@
 {% block title %}Voucher{% endblock %}
 {% block content %}
 <script>
+    
     function inserir(numero) {
       let text = document.querySelector("[name='voucher']").value + numero;
       text = text.replace(/\D/g, "")
-      text = text.replace(/(\d)(\d{4})$/, "$1.$2")
-      text = text.replace(/(\d)(\d{4})$/, "$1.$2")
-        
+      //aplicar replace mascara para 000.000.000.000.000;
+      text = text.replace(/(\d{3})(\d)/, '$1.$2');
+      text = text.replace(/(\d{3})(\d)/, '$1.$2');
+      text = text.replace(/(\d{3})(\d)/, '$1.$2');
+      text = text.replace(/(\d{3})(\d)/, '$1.$2');
+      text = text.substring(0,19);
       document.querySelector("[name='voucher']").value = text;
     }
     function deletarUltimo() {
@@ -19,28 +23,42 @@
       let text = '' ;
       document.querySelector("[name='voucher']").value = text;
     }
+    function sendcheking() {
+    let voucher = document.querySelector("[name='voucher']").value
+    const strNum = voucher.replace(/[^0-9]/g, '')
+    let data = strNum.substring(4,12)
+    let tempo = strNum.substring(12,14)
+    let digito = strNum.substring(14,14)
+    console.log('data '+data)
+    console.log('tempo '+tempo)
+    console.log('digito '+digito)
+    //extrair data hora minutos voucher
+
+
+    const hours = Math.floor((tempo*10)/ 60);          
+    const minutes = (tempo*10) % 60;
+    
+    if ( `${minutes}` != '00' || `${hours}` != '00') {
+      window.location.href = `cheking?hours=${hours}&min=${minutes}&seg=00`
+
+    } else {
+      timeT.classList.add('red');
+      console.log(timeT.className)
+    }
+  }
 </script>  
-<nav>
-  {% if request.path  != '/' %}
-      
-    <div id="back" class="back plain-text">
-      <a href="/tipopagamento">
-        <span class="material-symbols-outlined">
-          arrow_back
-        </span>
-      </a>
-    </div>
-  {% endif %}    
-</nav>  
+
 <div class="grid-container">
     <div class="container ">
         
         <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
-
-        <input type="text" class="input" id="voucher" name="voucher" maxlength="20" >
+        <h1>Informe seu Voucher</h1>
+        <input type="text" class="input" id="voucher" name="voucher" maxlength="20" placeholder="000.000.000.000.000" >
+       
         <div class="info-container div">
+          
         <a class="button-fone  plain-text"  href="/tipopagamento">Voltar</a>
-        <p class="button-fone" href="/cheking">Validar</p>
+        <p class="button-fone" onclick="sendcheking()">Avançar</p>
         </div>
 
     </div>

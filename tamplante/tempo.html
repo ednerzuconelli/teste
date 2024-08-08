@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Tempo{% endblock %}
+{% block content %}
+<script>
+    let totalSeconds = 0;
+    const MAX_SECONDS = 86400; // 24 horas en segundos  
+
+    function incrementTime(secondsToAdd) {
+        totalSeconds += secondsToAdd;
+        if (totalSeconds > MAX_SECONDS) {
+            totalSeconds = MAX_SECONDS;
+        }
+
+    }
+
+    function resetTime() {
+        totalSeconds = 0;
+        updateCounter();
+        updateSendLink();
+    }
+
+    function sendcheking() {
+        const valant =  document.querySelector("[name='voucher']").value ;
+        let text = valant.substring(0,5)
+        let tempo = text.replace(/[^0-9]/g, '')
+        //extrair data hora minutos voucher
+        const hours = tempo.substring(0,2);
+        const minutes = tempo.substring(2,4);
+        if (minutes != '00' || hours != '00') {
+            window.location.href = `cheking?hours=${hours}&min=${minutes}&seg=00`;
+        } else {
+            counterElement.classList.add('red');
+            console.log(counterElement.className)
+        }
+        
+    }
+
+    function updateCounter() {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        counterElement.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+    function pad(num) {
+        return num.toString().padStart(2, '0');
+    }
+    
+    function inserir(numero) {
+        const valant =  document.querySelector("[name='voucher']").value ;
+       
+        let text = valant.substring(1,5)+numero
+        console.log('hora '+text)
+        text = text.replace(/[^0-9]/g, '')
+        text = text.substring(0,2)+':'+text.substring(2,4)
+        document.querySelector("[name='voucher']").value = text;
+    }
+    function deletarUltimo() {
+        let text = document.querySelector("[name='voucher']").value;
+        document.querySelector("[name='voucher']").value = text.substring(0, text.length - 1);
+    }
+    function reset() {
+        let text = '00:00';
+        document.querySelector("[name='voucher']").value = text;
+    }
+</script>
+
+<div class="grid-container">
+    <div class="container ">
+
+        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+        <h1>Informe o tempo( em minutos)</h1>
+        <input type="text" class="input" id="voucher" name="voucher"  required placeholder="00:00">
+        <!--<button class="button" onclick="inserir(30)">+30 minutos</button>-->
+        <div class="info-container div">
+
+            <a class="button-fone  plain-text" href="/tipopagamento">Voltar</a>
+            <a id="sendLink" onclick="sendcheking()" class="button-fone plain-text">Avançar</a>
+        </div>
+
+    </div>
+    <div class="teclado">
+        <button class="button" onclick="inserir(1)">1</button>
+        <button class="button" onclick="inserir(2)">2</button>
+        <button class="button" onclick="inserir(3)">3</button>
+        <button class="button" onclick="inserir(4)">4</button>
+        <button class="button" onclick="inserir(5)">5</button>
+        <button class="button" onclick="inserir(6)">6</button>
+        <button class="button" onclick="inserir(7)">7</button>
+        <button class="button" onclick="inserir(8)">8</button>
+        <button class="button" onclick="inserir(9)">9</button>
+       
+
+        <button class="button" onclick="deletarUltimo()"><- </button>
+                <button class="button" onclick="inserir(0)">0</button>
+                <button class="button" onclick="reset()">C</button>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

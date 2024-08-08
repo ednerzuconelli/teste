@@ -21,7 +21,9 @@ def create_table_pedido():
             status_carga        BOOLEAN DEFAULT FALSE,
             tiempo_carga        TEXT,
             valor               FLOAT,
-            segundo_total       INTEGER
+            segundo_total       INTEGER,
+            fone                TEXT,
+            voucher             TEXT 
     ); ''')
      
 def execute(sql, values=None):
@@ -40,7 +42,7 @@ def execute(sql, values=None):
     #return cur.fetchall()[0]
 
 
-def create_pedido(date, time_c, fomatado, seg, valor):
+def create_pedido(date, time_c, fomatado, seg, valor, fone, voucher):
     """ Create new pedido in database
 
     :param
@@ -49,15 +51,17 @@ def create_pedido(date, time_c, fomatado, seg, valor):
         formatado:: HH:MM:SS
         valor::     valor a pagar
         seg::       total secondss
+        fone::      telefone
+        voucher::   voucher recarga
 
     """
 
     sql = '''
-    INSERT INTO pedido(created_date, created_time,  tiempo_carga, segundo_total, valor)
-      VALUES (%s, %s, %s, %s, %s);
+    INSERT INTO pedido(created_date, created_time,  tiempo_carga, segundo_total, valor,fone,voucher)
+      VALUES (%s, %s, %s, %s, %s,%s, %s);
         
     '''
-    execute(sql, values=(date,time_c, fomatado, seg, valor))
+    execute(sql, values=(date,time_c, fomatado, seg, valor,fone,voucher))
 
 def add_pix_id(pedido_id ,pix_id):
     """ add pix_id ref in pix 
@@ -153,7 +157,15 @@ def ultimo_registro():
         return row[0]
     return None
 
-
+def telefone_cadastrado(telefone):
+    sql = f"SELECT fone FROM pedido WHERE voucher = '0' and  fone = '{telefone}'"
+    conn = create_connection()
+    cur = conn.cursor()
+    cur.execute(sql)
+    row = cur.fetchone()
+    if row:
+        return row[0]
+    return None
 create_table_pedido()
 
 """

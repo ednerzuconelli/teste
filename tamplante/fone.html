@@ -1,63 +1,75 @@
-
 {% extends "base.html" %}
 {% block title %}Inicio{% endblock %}
 {% block head %}
-  {{ super() }}
-  <meta charset="UTF-8"> 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-  
-   <link
-     rel="stylesheet"
-     href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
-   />
+{{ super() }}
+<meta charset="UTF-8">
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+
+
+<script>
    
-   <script>
-    function inserir(numero) {
-      let text = document.querySelector("[name='tel']").value + numero;
-      text = text.replace(/\D/g, "")
-      text = text.replace(/^(\d{2})(\d)/g, "($1) $2")
-      text = text.replace(/(\d)(\d{4})$/, "$1-$2")
-        
-      document.querySelector("[name='tel']").value = text;
+  function inserir(numero) {
+    let text = document.querySelector("[name='tel']").value + numero;
+    text = text.replace(/\D/g, "")
+    text = text.replace(/(\d{2})(\d)/, "($1) $2")
+    text = text.replace(/(\d)(\d{4})$/, "$1-$2")
+    text = text.substring(0,15)
+
+    document.querySelector("[name='tel']").value = text;
+  }
+  function deletarUltimo() {
+    let text = document.querySelector("[name='tel']").value;
+    document.querySelector("[name='tel']").value = text.substring(0, text.length - 1);
+  }
+  function reset() {
+    let text = '';
+    document.querySelector("[name='tel']").value = text;
+  }
+
+  function sendcheking() {
+    let fone = document.querySelector("[name='tel']").value
+
+    if (`${fone}` != '') {
+      window.location.href = `tipopagamento?telefone=${fone}`
+
+    } else {
+      timeT.classList.add('red');
+      console.log(timeT.className)
     }
-    function deletarUltimo() {
-      let text = document.querySelector("[name='tel']").value ;
-      document.querySelector("[name='tel']").value = text.substring(0,text.length-1);
-    }
-    function reset() {
-      let text = '' ;
-      document.querySelector("[name='tel']").value = text;
-    }
-   
-    </script>   
-   
+  }
+
+</script>
+
 {% endblock %}
 
 {% block content %}
 
 <div class="grid-container">
-    <div class="container">
-      <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
-      <h1>Informe seu Telefone/Whats</h1>
-      <input type="tel" class="input" id="tel" name="tel" maxlength="15" placeholder="(00) 00000-0000">
-      <a  href="{{ url_for('tipopagamento') }}" class="button-fone center plain-text ">Avançar</a>
-      
-    </div>    
-    <div class="teclado">
-        <button class="button" onclick="inserir(1)">1</button>
-        <button class="button" onclick="inserir(2)">2</button>
-        <button class="button" onclick="inserir(3)">3</button>
-        <button class="button" onclick="inserir(4)">4</button>
-        <button class="button" onclick="inserir(5)">5</button>
-        <button class="button" onclick="inserir(6)">6</button>
-        <button class="button" onclick="inserir(7)">7</button>
-        <button class="button" onclick="inserir(8)">8</button>
-        <button class="button" onclick="inserir(9)">9</button>
-  
-        <button class="button" onclick="deletarUltimo()"><-</button>
+  <div class="container">
+    <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+    <h1>Informe seu Telefone/Whats</h1>
+    <input type="tel" class="input" id="tel" name="tel" maxlength="15" placeholder="(00) 00000-0000">
+    <a onclick="sendcheking()" class="button-fone center plain-text ">Avançar</a>
+
+  </div>
+  <div class="teclado">
+    <button class="button" onclick="inserir(1)">1</button>
+    <button class="button" onclick="inserir(2)">2</button>
+    <button class="button" onclick="inserir(3)">3</button>
+    <button class="button" onclick="inserir(4)">4</button>
+    <button class="button" onclick="inserir(5)">5</button>
+    <button class="button" onclick="inserir(6)">6</button>
+    <button class="button" onclick="inserir(7)">7</button>
+    <button class="button" onclick="inserir(8)">8</button>
+    <button class="button" onclick="inserir(9)">9</button>
+
+    <button class="button" onclick="deletarUltimo()"><-</button>
         <button class="button" onclick="inserir(0)">0</button>
         <button class="button" onclick="reset()">C</button>
-    </div>
-  </div>   
+        
+  </div>
+</div>
 {% endblock %}
-

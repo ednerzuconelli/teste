@@ -25,6 +25,13 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 2fr);
     justify-content: center;
+    margin-top: 70px;
+    padding-left: 3rem;
+}
+.qrcode {
+    display: grid;
+    grid-template-columns: repeat(1, 2fr);
+    justify-content: center;
     margin-top: 80px;
     padding-left: 3rem;
 }

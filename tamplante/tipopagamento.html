@@ -4,18 +4,7 @@
   {{ super() }}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="styles.css" />
-  <nav>
-    {% if request.path  != '/' %}
-        
-      <div id="back" class="back plain-text">
-        <a href="/">
-          <span class="material-symbols-outlined">
-            arrow_back
-          </span>
-        </a>
-      </div>
-    {% endif %}    
-  </nav>
+ 
 {% endblock %}
 
 {% block content %}

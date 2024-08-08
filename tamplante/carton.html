@@ -1,33 +1,51 @@
 {% extends "base.html" %}
 {% block title %}Cartao{% endblock %}
 {% block content %}
+<script>
+    function incrementTime(numero) {
+        let text = document.querySelector("[name='voucher']").value+numero;
+        text = text.replace(/\D/g, ''); // Remove caracteres não numéricos;
+        text = text.replace(/^(\d{0,2})(\d{0,2})/, '$1/$2'); // Adiciona a barra após os 2 primeiros dígitos
+        document.querySelector("[name='voucher']").value = text;
+    }
+    function deletarUltimo() {
+      let text = document.querySelector("[name='voucher']").value ;
+      document.querySelector("[name='voucher']").value = text.substring(0,text.length-1);
+    }
+    function reset() {
+      let text = '' ;
+      document.querySelector("[name='voucher']").value = text;
+    }
+</script>
 <div class="grid-container">
     <div class="container ">
 
         <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
 
         <div class="voucher ">
-        <p>{{ total_pagar }} R$</p>
-        <p>Número do Cartão</p>
-        <input type="text" class="input" id="numerocartao" name="voucher" maxlength="20"placeholder="(00) 00000-0000">
-        <div class="dado-cartao">
-            <div>
-                <p>Validade</p>
-                <input type="text" class="input-vencimento" id="validade" name="voucher" maxlength="20" placeholder="00/00">
+            <p>{{ total_pagar }} R$</p>
+            <h2>Número do Cartão</h2>
+            <input type="text" class="input" id="numerocartao" name="cartao" maxlength="20"
+                placeholder="0000 0000 0000 0000">
+            <div class="dado-cartao">
+                <div>
+                    <h2>Validade</h2>
+                    <input type="text" class="input-vencimento" id="validade" name="voucher" maxlength="4"
+                        onclick="dataExpiracaoCartaoMask()" placeholder="00/00">
+                </div>
+                <div>
+                    <h2>CVV</h2>
+                    <input type="text" class="input-codigo" id="codigoseguranca" name="cvv" maxlength="3">
+                </div>
             </div>
-            <div>
-                <p>Codigo de Segurança</p>
-                <input type="text" class="input-codigo" id="codigoseguranca" name="voucher" maxlength="3">
-            </div>
-        </div> 
         </div>
         <div class="info-container div">
-        <a class="button-fone  plain-text " href="/cheking">Voltar</a>
+            <a class="button-fone  plain-text " href="/cheking">Voltar</a>
 
-        <a id="sendLink" href="/cheking" class="button-fone plain-text ">
-            Avançar
-        </a>
-    </div>
+            <a id="sendLink" href="/cheking" class="button-fone plain-text ">
+                Avançar
+            </a>
+        </div>
     </div>
     <div class="teclado">
         <button class="button" onclick="incrementTime(1)">1</button>

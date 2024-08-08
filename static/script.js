@@ -16,7 +16,6 @@ let caracteres   = textoInicial.split('');
 let contador_t   = caracteres.length -1;
 
 function incrementTime(secondsToAdd) {
-    console.log('passou aqui');
     totalSeconds += secondsToAdd;
     if (totalSeconds > MAX_SECONDS) {
         totalSeconds = MAX_SECONDS;
@@ -218,5 +217,4 @@ if (queryString.includes("startauto")) {
     // Llama a la función si estás en la página deseada y el parámetro existe
     startcronometro();
 }
-
 
