@@ -51,14 +51,17 @@
     
     function inserir(numero) {
         let valant =  document.querySelector("[name='voucher']").value ;
-        if (valant == '')
+        
+        if (valant == '' || valant.length < 5){
           valant = '00:00'
+        }
         let text = valant.substring(1,5)+numero
         
         text = text.replace(/[^0-9]/g, '')
         text = text.substring(0,2)+':'+text.substring(2,4)
         document.querySelector("[name='voucher']").value = text;
     }
+
     function deletarUltimo() {
         let text = document.querySelector("[name='voucher']").value;
         document.querySelector("[name='voucher']").value = text.substring(0, text.length - 1);

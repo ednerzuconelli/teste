@@ -30,7 +30,7 @@
     }
 
     function encerrar(telefone) {
-        let fone = document.querySelector("[name='tel']").value.replace(/[^\d]+/g,'') 
+        let fone = document.querySelector("[name='tel']").value.replace(/[^\d]+/g, '')
         if (`${fone}` == '') {
             alert("Telefone não cadastrado");
         } else if (`${fone}` !== telefone) {
@@ -48,21 +48,18 @@
 <div class="grid-container">
     <div class="container">
         <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
-        <h2>Muito obrigado pela sua escolha.</h2>
-
-        <div>
-            <a id="counter">{{ Time }}</a>
+        <!--<h2>Muito obrigado pela sua escolha.</h2> -->
+        <h2 id="intruciones">Conecte o carregador ao carro</h2>
+        <div class="grid-container-timer">
+            <div class="counter">
+                <a  id="counter">Tempo: {{ Time }}</a>
+            </div>
+            <button class="button-iniciar " onclick="startcronometro()" id="startButton">Iniciar</button>
         </div>
-        
-        
-
-        <h3 id="intruciones">Pegue o carregador, coloque-o no carro e pressione o botão Iniciar.</h3>
-
-        <button class="button-fone " onclick="startcronometro()" id="startButton">Iniciar</button>
-        <h4 id="intruciones">Para Encerrar preecha seu telefone e clique no botão Encerrar.</h4>
+        <h4 id="intruciones">Para encerrar preecha seu telefone e clique no botão Encerrar.</h4>
         <input type="tel" class="input-timer" id="tel" name="tel" maxlength="15" placeholder="(00) 00000-0000">
         <button onclick="encerrar('{{ Fone }}')" class="button ">Encerrar</button>
-        
+
 
     </div>
     <div class="teclado">
@@ -76,7 +73,7 @@
         <button class="button" onclick="inserir(8)">8</button>
         <button class="button" onclick="inserir(9)">9</button>
 
-        <button class="button" onclick="deletarUltimo()"><-</button>
+        <button class="button" onclick="deletarUltimo()"><- </button>
                 <button class="button" onclick="inserir(0)">0</button>
                 <button class="button" onclick="reset()">C</button>
     </div>
