@@ -167,7 +167,8 @@ def show_post():
 @app.route('/pix/<pedido_id>')
 def pix(pedido_id):
    pedido = view_pedido(pedido_id)
-   total  = str(pedido[-4]).replace(',', '')
+   total  ="{:.2f}".format(pedido[-4])
+   print(total)
    if total != '0.00':
      # if path.exists(".env"):   
      #    config = dotenv_values(".env")
@@ -177,7 +178,7 @@ def pix(pedido_id):
         
          pix = (0,pedido[1])
          if pix[1] == None:
-            pix = create_cob(appid, total.replace('.','')+'0', cometdv='')
+            pix = create_cob(appid, total.replace('.',''), cometdv='')
             add_pix_id(pedido_id, pix[1])
         
          cob = get_cob(appid, pix[1])
@@ -204,7 +205,7 @@ def pix(pedido_id):
 def pixcheck(idPix):
     def generate_data():
         #config = dotenv_values(".env")
-        config = dotenv_values("env")
+        config = dotenv_values(".env")
         appid  = config['APP_ID']
         while True:
             ultima_trastion = get_cob(appid, idPix)
