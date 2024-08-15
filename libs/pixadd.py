@@ -123,3 +123,17 @@ def accounts(appid:str, accountId:str) -> dict:
 
     return dict(json.loads((data.decode("utf-8"))))
 
+def delete_pix(appid:str, idpix:str) -> str:
+    """
+     Elimina un cobro específico mediante su ID de transacción.
+     Args:
+        appid (str): ID de la aplicación utilizado para la autorización.
+        accountId (str): ID de la cuenta.
+
+   
+ 
+     """
+    headers = { 'Authorization': appid }
+    con = requests.delete(f"https://api.openpix.com.br/api/v1/charge/{idpix}", headers=headers)
+    return con.status_code
+    

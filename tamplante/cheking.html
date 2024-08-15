@@ -13,12 +13,14 @@
         window.location.href =`/pix/${pedido_id}`
     }
     function carton(total, pedido_id) {
-        window.location.href =`/carton/${pedido_id}`
+        alert("checkout não cadastrado")
+        // window.location.href =`/carton/${pedido_id}`
     }
 </script>
 {% endblock %}
 {% block content %}
-<div class="container forma-pagamento">
+<div class="container ">
+    <div class="forma-pagamento">
     <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
     <div class="center">
         <h2>Informação de pagamento</h2>
@@ -32,8 +34,8 @@
             <p>montante a ser pago:</p>
         </div>
         <div>
-            <p>{{ time }}</p>
-            <p>R$ {{ total }}</p>
+            <p><b>{{ time }}</b></p>
+            <p><b>R$ {{ total }}</b></p>
         </div>
     </div>
     <div class="center">
@@ -41,13 +43,14 @@
 
     </div>
 
-    <div class="center">
+</div>
+    <div class=" buttons-checking">
 
-        <a class="button  plain-text" href="/tempo">Voltar</a>
+        <a class="button-fone  plain-text" href="/tempo">Voltar</a>
 
-        <button class="button" onclick="pix({{ total }}, {{ pedido_id }})">Pix</button>
+        <button class="button-fone" onclick="pix({{ total }}, {{ pedido_id }})">Pix</button>
 
-        <button class="button plain-text" onclick="carton({{total}},{{pedido_id}})">Cartão</button>
+        <button class="button-fone plain-text" onclick="carton({{total}},{{pedido_id}})">Cartão</button>
 
     </div>
 </div>

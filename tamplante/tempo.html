@@ -26,7 +26,11 @@
         //extrair data hora minutos voucher
         const hours = tempo.substring(0,2);
         const minutes = tempo.substring(2,4);
-        if (minutes != '00' || hours != '00') {
+        if (minutes > 59) {
+            alert("Minutos inválidos");
+        } else if (hours > 23) {
+            alert("Horas inválidas");
+        } else if (minutes != '00' || hours != '00') {
             window.location.href = `cheking?hours=${hours}&min=${minutes}&seg=00`;
         } else {
             counterElement.classList.add('red');
@@ -46,10 +50,11 @@
     }
     
     function inserir(numero) {
-        const valant =  document.querySelector("[name='voucher']").value ;
-       
+        let valant =  document.querySelector("[name='voucher']").value ;
+        if (valant == '')
+          valant = '00:00'
         let text = valant.substring(1,5)+numero
-        console.log('hora '+text)
+        
         text = text.replace(/[^0-9]/g, '')
         text = text.substring(0,2)+':'+text.substring(2,4)
         document.querySelector("[name='voucher']").value = text;
@@ -68,7 +73,7 @@
     <div class="container ">
 
         <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
-        <h1>Informe o tempo( em minutos)</h1>
+        <h1>Informe o tempo</h1>
         <input type="text" class="input" id="voucher" name="voucher"  required placeholder="00:00">
         <!--<button class="button" onclick="inserir(30)">+30 minutos</button>-->
         <div class="info-container div">

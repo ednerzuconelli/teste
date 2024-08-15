@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var minutesStr = ('0' + minutes).slice(-2);
         var secondsStr = ('0' + seconds).slice(-2);
 
-        var timeString = hoursStr + ':' + minutesStr + ':' + secondsStr;
+        var timeString = hoursStr + ':' + minutesStr;
         display.textContent = timeString;
         tiempoInicial--; // Decrementar el tiempo
         if (tiempoInicial < 0) {

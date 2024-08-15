@@ -1,11 +1,13 @@
-from flask import Flask, render_template, request, Response, abort, redirect
+from flask import Flask, render_template, request, Response, abort, redirect,url_for
 from os import path, getcwd, chdir
-from libs.pixadd import create_cob, get_cob
+from libs.pixadd import create_cob, get_cob, delete_pix
 from libs.db import *
 from dotenv import dotenv_values
 from datetime import datetime
 from time import sleep
 from libs.relay.acrive import *
+import math
+
 
 app = Flask(__name__)
 
@@ -26,7 +28,7 @@ def home():
 def tipopagamento():
    telefone = request.args.get('telefone')
    if not telefone:
-        telefone ='00 0000-0000'
+        telefone ='00 00000-0000'
    
 
    resultado = ''.join(filter(lambda i: i if i.isdigit() else None, telefone))
@@ -57,7 +59,10 @@ def tipopagamento():
 
 @app.route('/voucher')
 def voucher():
-   return render_template('voucher.html', img='voucher.jpg')
+   pedido_id = ultimo_registro()
+   print(pedido_id)
+   return render_template('voucher.html', 
+                                 pedido_id=pedido_id)
 @app.route('/tempo')
 def tempo():
 
@@ -86,13 +91,41 @@ def carton(pedido_id):
     return render_template('carton.html', total_pagar='%.2f' % float(total)
                            ,  img='nfc.jpg')
 
+@app.route('/deletePix/<pedido_id>')
+def deletePix(pedido_id):
+   pedido = view_pedido(pedido_id)
+   pix_id = pedido[1]
+   print(pix_id)
+   if pix_id != None:
+      if path.exists(".env"):   
+         config = dotenv_values(".env")
+         appid = config['APP_ID']
+         con = delete_pix(appid,pix_id)
+         if (con ==200):
+           update_value('pix_id','null', "pedido_id = "+str(pedido_id))
+           return redirect('/')
+         else:
+           return render_template('error.html', num= con)
+      abort(500)
+   abort(404)
+
+
 @app.route('/timer/<int:pedido_id>')
 def timer(pedido_id):
       start = request.args.get('startauto')
+      voucher = request.args.get('voucher')
+      if (voucher !=""):
+         tempo = int(voucher[12: 14])
+         hora = math.floor((tempo * 10) / 60);
+         minutos = (tempo * 10) % 60;
+         carga = "{:02d}:{:02d}:{:02d}".format(
+                          int(hora), int(minutos), int('0'))
+         update_value('tiempo_carga',f"\'{carga}\'", "pedido_id = "+str(pedido_id))   
+         update_value('voucher',f"\'{voucher}\'", "pedido_id = "+str(pedido_id))
       print(start)
       info = view_pedido(pedido_id)
       print(info)
-      return render_template('timer.html', Time=info[-5])
+      return render_template('timer.html', Time=info[-5],Fone=info[-2])
 
 
 @app.route('/cheking')
@@ -124,8 +157,7 @@ def show_post():
    update_value('segundo_total',totalseg, "pedido_id = "+str(pedido_id))
    update_value('tiempo_carga',f"\'{carga}\'", "pedido_id = "+str(pedido_id))   
    
-   if total_pagar != '0':
-      return render_template('cheking.html', 
+   return render_template('cheking.html', 
                              time=carga,
                              total=total_pagar,
                              pedido_id=pedido_id )
@@ -136,18 +168,15 @@ def show_post():
 def pix(pedido_id):
    pedido = view_pedido(pedido_id)
    total  = str(pedido[-4]).replace(',', '')
-   print('total '+total)
    if total != '0.00':
+     # if path.exists(".env"):   
+     #    config = dotenv_values(".env")
       if path.exists(".env"):   
          config = dotenv_values(".env")
-      #if path.exists("env"):   
-      #   config = dotenv_values("env")
          appid = config['APP_ID']
         
          pix = (0,pedido[1])
-         print(pix[1])
          if pix[1] == None:
-            print(appid)
             pix = create_cob(appid, total.replace('.','')+'0', cometdv='')
             add_pix_id(pedido_id, pix[1])
         
@@ -174,8 +203,8 @@ def pix(pedido_id):
 @app.route('/pixcheck/<idPix>')
 def pixcheck(idPix):
     def generate_data():
-        config = dotenv_values(".env")
-        #config = dotenv_values("env")
+        #config = dotenv_values(".env")
+        config = dotenv_values("env")
         appid  = config['APP_ID']
         while True:
             ultima_trastion = get_cob(appid, idPix)
@@ -210,11 +239,11 @@ def completestatus():
             pedido_id = ultimo_registro()
             registro = view_pedido(pedido_id) 
 
-            if registro[-3] == "00:00:00":
+            if registro[-5] == "00:00:00":
                update_value('status_carga',True, "pedido_id = {pedido_id}")
                control_relay().stop()
             else:
-               seg = tiempo_a_segundos(registro[-3])
+               seg = tiempo_a_segundos(registro[-5])
                timeformat = formatear_tiempo(seg - 60)
                control_relay().stop()
 
@@ -228,6 +257,14 @@ def completestatus():
 
    return Response(generate_data(), mimetype='text/event-stream', headers={'Cache-Control': 'no-cache'})
 
+
+@app.route('/cancel ')
+def cancelstatus():
+   pedido_id = ultimo_registro()
+   print(pedido_id)
+   update_value('status_carga',True, "pedido_id = {pedido_id}")
+   control_relay().stop()
+   return render_template('fone.html')
 
 # section error
 

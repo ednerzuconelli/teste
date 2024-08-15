@@ -1,6 +1,37 @@
 
 {% extends "base.html" %}
 {% block title %}Pix{% endblock %}
+{% block head %}
+{{ super() }}
+
+<script>
+
+    function inserir(numero) {
+        let text = document.querySelector("[name='tel']").value + numero;
+        text = text.replace(/\D/g, "")
+        text = text.replace(/(\d{2})(\d)/, "($1) $2")
+        text = text.replace(/(\d)(\d{4})$/, "$1-$2")
+        text = text.substring(0, 15)
+
+        document.querySelector("[name='tel']").value = text;
+    }
+    function deletarUltimo() {
+        let text = document.querySelector("[name='tel']").value;
+        document.querySelector("[name='tel']").value = text.substring(0, text.length - 1);
+    }
+    function reset() {
+        let text = '';
+        document.querySelector("[name='tel']").value = text;
+    }
+
+    function sendcheking() {
+        var url_atual = window.location.pathname.split('/');
+        var pedido_id = url_atual[2]
+        window.location.href = '/deletePix/'+ pedido_id
+    }
+</script>
+
+{% endblock %}
 {% block content %}
 <div class="grid-container">
     <div class="container">
@@ -11,7 +42,7 @@
 
         </div>
         
-        <p>{{ total_pagar }} R$</p>
+        <p><b> R$ {{ total_pagar }} </b></p>
         <p class="button-fone" onclick="sendcheking()">Cancelar</p>
     </div>
     <div class="qrcode">

@@ -1,87 +1,110 @@
-
 {% extends "base.html" %}
 {% block title %}Voucher{% endblock %}
 {% block content %}
 <script>
-    
-    function inserir(numero) {
-      let text = document.querySelector("[name='voucher']").value + numero;
-      text = text.replace(/\D/g, "")
-      //aplicar replace mascara para 000.000.000.000.000;
-      text = text.replace(/(\d{3})(\d)/, '$1.$2');
-      text = text.replace(/(\d{3})(\d)/, '$1.$2');
-      text = text.replace(/(\d{3})(\d)/, '$1.$2');
-      text = text.replace(/(\d{3})(\d)/, '$1.$2');
-      text = text.substring(0,19);
-      document.querySelector("[name='voucher']").value = text;
-    }
-    function deletarUltimo() {
-      let text = document.querySelector("[name='voucher']").value ;
-      document.querySelector("[name='voucher']").value = text.substring(0,text.length-1);
-    }
-    function reset() {
-      let text = '' ;
-      document.querySelector("[name='voucher']").value = text;
-    }
-    function sendcheking() {
+
+  function inserir(numero) {
+    let text = document.querySelector("[name='voucher']").value + numero;
+    text = text.replace(/\D/g, "")
+    //aplicar replace mascara para 000.000.000.000.000;
+    text = text.replace(/(\d{3})(\d)/, '$1.$2');
+    text = text.replace(/(\d{3})(\d)/, '$1.$2');
+    text = text.replace(/(\d{3})(\d)/, '$1.$2');
+    text = text.replace(/(\d{3})(\d)/, '$1.$2');
+    text = text.substring(0, 19);
+    document.querySelector("[name='voucher']").value = text;
+  }
+  function deletarUltimo() {
+    let text = document.querySelector("[name='voucher']").value;
+    document.querySelector("[name='voucher']").value = text.substring(0, text.length - 1);
+  }
+  function reset() {
+    let text = '';
+    document.querySelector("[name='voucher']").value = text;
+  }
+  function mod11(valor, retornarResto, multiplicadores) {
+    if (typeof retornarResto === "undefined") retornarResto = false;
+    if (typeof multiplicadores === "undefined") multiplicadores = [2, 3, 4, 5, 6, 7, 8, 9];
+
+    let i = 0;
+    let resto = valor.split("").reduceRight(function (anterior, atual) {
+      if (i > multiplicadores.length - 1) i = 0;
+      return (multiplicadores[i++] * parseInt(atual, 10)) + anterior;
+    }, 0) % 11;
+
+    return retornarResto ? resto : (11 - resto >= 10 ? 0 : 11 - resto);
+  }
+  function sendcheking() {
     let voucher = document.querySelector("[name='voucher']").value
     const strNum = voucher.replace(/[^0-9]/g, '')
-    let data = strNum.substring(4,12)
-    let tempo = strNum.substring(12,14)
-    let digito = strNum.substring(14,14)
-    console.log('data '+data)
-    console.log('tempo '+tempo)
-    console.log('digito '+digito)
-    //extrair data hora minutos voucher
+    let data = strNum.substring(4, 12)
+    let tempo = strNum.substring(12, 14)
+    let digito = strNum.substring(14, 15)
+
+    let modulo = mod11(strNum.substring(0, 14))
+    if (digito == modulo) {
+      data = data.substring(6, 8) + '/' + data.substring(4, 6) + '/' + data.substring(0, 4)
+      let partesData = data.split('/');
+
+      //extrair data hora minutos voucher
+      let datcor = new Date(partesData[2], partesData[1] - 1, partesData[0], '23', '59', '59');
 
 
-    const hours = Math.floor((tempo*10)/ 60);          
-    const minutes = (tempo*10) % 60;
-    
-    if ( `${minutes}` != '00' || `${hours}` != '00') {
-      window.location.href = `cheking?hours=${hours}&min=${minutes}&seg=00`
+      if (new Date().getTime() < datcor.getTime()) {
+        const hours = Math.floor((tempo * 10) / 60);
+        const minutes = (tempo * 10) % 60;
 
+        if (`${minutes}` != '00' || `${hours}` != '00') {
+          window.location.href = `timer/{{pedido_id}}?voucher=${strNum}`
+
+        } else {
+          timeT.classList.add('red');
+          console.log(timeT.className)
+        }
+      } else {
+        alert("Voucher inválido, verificar");
+
+      }
     } else {
-      timeT.classList.add('red');
-      console.log(timeT.className)
+      alert("Digito verificador voucher inválido, verificar");
     }
   }
-</script>  
+</script>
 
 <div class="grid-container">
-    <div class="container ">
-        
-        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
-        <h1>Informe seu Voucher</h1>
-        <input type="text" class="input" id="voucher" name="voucher" maxlength="20" placeholder="000.000.000.000.000" >
-       
-        <div class="info-container div">
-          
-        <a class="button-fone  plain-text"  href="/tipopagamento">Voltar</a>
-        <p class="button-fone" onclick="sendcheking()">Avançar</p>
-        </div>
+  <div class="container ">
 
+    <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+    <h1>Informe seu Voucher</h1>
+    <input type="text" class="input" id="voucher" name="voucher" maxlength="20" placeholder="000.000.000.000.000">
+
+    <div class="info-container div">
+
+      <a class="button-fone  plain-text" href="/tipopagamento">Voltar</a>
+      <p class="button-fone" onclick="sendcheking()">Avançar</p>
     </div>
-    <div class="teclado">
-        <button class="button" onclick="inserir(1)">1</button>
-        <button class="button" onclick="inserir(2)">2</button>
-        <button class="button" onclick="inserir(3)">3</button>
-        <button class="button" onclick="inserir(4)">4</button>
-        <button class="button" onclick="inserir(5)">5</button>
-        <button class="button" onclick="inserir(6)">6</button>
-        <button class="button" onclick="inserir(7)">7</button>
-        <button class="button" onclick="inserir(8)">8</button>
-        <button class="button" onclick="inserir(9)">9</button>
-  
-        <button class="button" onclick="deletarUltimo()"><-</button>
+
+  </div>
+  <div class="teclado">
+    <button class="button" onclick="inserir(1)">1</button>
+    <button class="button" onclick="inserir(2)">2</button>
+    <button class="button" onclick="inserir(3)">3</button>
+    <button class="button" onclick="inserir(4)">4</button>
+    <button class="button" onclick="inserir(5)">5</button>
+    <button class="button" onclick="inserir(6)">6</button>
+    <button class="button" onclick="inserir(7)">7</button>
+    <button class="button" onclick="inserir(8)">8</button>
+    <button class="button" onclick="inserir(9)">9</button>
+
+    <button class="button" onclick="deletarUltimo()"><- </button>
         <button class="button" onclick="inserir(0)">0</button>
         <button class="button" onclick="reset()">C</button>
-    </div>
-  </div>   
-   
-   
-   
-    
+  </div>
+</div>
+
+
+
+
 
 
 
