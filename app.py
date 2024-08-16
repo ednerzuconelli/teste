@@ -7,7 +7,7 @@ from datetime import datetime
 from time import sleep
 from libs.relay.acrive import *
 import math
-
+from libs.whats import envia_mensagem
 
 app = Flask(__name__)
 
@@ -55,7 +55,10 @@ def tipopagamento():
    pedido_id = ultimo_registro()
    print(pedido_id)	
    return render_template('tipopagamento.html', telefone=telefone)
-   
+
+@app.route('/config')
+def config():
+   return render_template('test.html')  
 
 @app.route('/voucher')
 def voucher():
@@ -143,8 +146,8 @@ def show_post():
       minutos  = 00
       segundos = 00 
    
-   carga = "{:02d}:{:02d}:{:02d}".format(
-                          int(hora), int(minutos), int(segundos))
+   carga = "{:02d}:{:02d}".format(
+                          int(hora), int(minutos))
 
    totalseg = hora * 3600 + minutos * 60 + segundos
    
@@ -239,15 +242,17 @@ def completestatus():
       while True:
             pedido_id = ultimo_registro()
             registro = view_pedido(pedido_id) 
-
+            fone = registro[-2]
             if registro[-5] == "00:00:00":
                update_value('status_carga',True, "pedido_id = {pedido_id}")
                control_relay().stop()
+               if fone != '':
+                 con =envia_mensagem(fone, 'Carga Completa')
+                 print(con)
             else:
                seg = tiempo_a_segundos(registro[-5])
                timeformat = formatear_tiempo(seg - 60)
-               control_relay().stop()
-
+               control_relay().start()
                print(timeformat)
                update_value('tiempo_carga', "\'{timeformat}\'", "pedido_id = {pedido_id}")
             print(registro)
@@ -259,13 +264,19 @@ def completestatus():
    return Response(generate_data(), mimetype='text/event-stream', headers={'Cache-Control': 'no-cache'})
 
 
-@app.route('/cancel ')
+@app.route('/cancel')
 def cancelstatus():
+   fone = request.args.get('fone')
    pedido_id = ultimo_registro()
-   print(pedido_id)
-   update_value('status_carga',True, "pedido_id = {pedido_id}")
+   update_value('status_carga',True, f'pedido_id = {pedido_id}')
+   
+   con =envia_mensagem(fone, 'Carga cancelada')
+   
    control_relay().stop()
-   return render_template('fone.html')
+   if (con !=''):
+      return redirect('/')
+   else:
+      return render_template('error.html', num= con)
 
 # section error
 

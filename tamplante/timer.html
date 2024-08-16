@@ -36,7 +36,10 @@
         } else if (`${fone}` !== telefone) {
             alert("Telefone diferente do cadastrado");
         } else {
-            window.location.href = '/'
+            console.log(window.location.host)
+            window.location.href = 'http://' + window.location.host + `/cancel?fone=${fone}`
+            console.log(window.location.href)
+            
         }
     }
 </script>
@@ -56,9 +59,9 @@
             </div>
             <button class="button-iniciar " onclick="startcronometro()" id="startButton">Iniciar</button>
         </div>
-        <h4 id="intruciones">Para encerrar preecha seu telefone e clique no botão Encerrar.</h4>
+        <h3 id="intruciones">Para encerrar preecha seu telefone.</h3>
         <input type="tel" class="input-timer" id="tel" name="tel" maxlength="15" placeholder="(00) 00000-0000">
-        <button onclick="encerrar('{{ Fone }}')" class="button ">Encerrar</button>
+        <button onclick="encerrar('{{ Fone }}')" class="button-encerrar">Encerrar</button>
 
 
     </div>

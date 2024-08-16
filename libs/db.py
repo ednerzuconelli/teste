@@ -56,10 +56,10 @@ def create_pedido(date, time_c, fomatado, seg, valor, fone, voucher):
 
     """
     """alterar tabela pedido  criando campos voucher text e fone text"""
-    alter = '''alter table pedido add column if not exists fone text;
+    """ alter = '''alter table pedido add column if not exists fone text;
                alter table pedido add column if not exists voucher text;'''
     execute(alter)
-    
+    """
     sql = '''
     INSERT INTO pedido(created_date, created_time,  tiempo_carga, segundo_total, valor,fone,voucher)
       VALUES (%s, %s, %s, %s, %s,%s, %s);
