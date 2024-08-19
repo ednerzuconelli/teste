@@ -8,9 +8,9 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-
+<link rel="stylesheet" href="../static/script.js"/>
 <script>
-
+    <link rel="stylesheet" href="../static/script.js"/>
     function inserir(numero) {
         let text = document.querySelector("[name='tel']").value + numero;
         text = text.replace(/\D/g, "")
@@ -55,7 +55,7 @@
         <h2 id="intruciones">Conecte o carregador ao carro</h2>
         <div class="grid-container-timer">
             <div class="counter">
-                <a  id="counter">Tempo: {{ Time }}</a>
+                <a  id="counter">{{ Time }}</a>
             </div>
             <button class="button-iniciar " onclick="startcronometro()" id="startButton">Iniciar</button>
         </div>

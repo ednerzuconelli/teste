@@ -117,7 +117,8 @@ def deletePix(pedido_id):
 def timer(pedido_id):
       start = request.args.get('startauto')
       voucher = request.args.get('voucher')
-      if (voucher !=""):
+      print(voucher)
+      if (voucher !=None):
          tempo = int(voucher[12: 14])
          hora = math.floor((tempo * 10) / 60);
          minutos = (tempo * 10) % 60;
@@ -158,7 +159,7 @@ def show_post():
    print(pedido_id)	
    update_value('valor',total_pagar, "pedido_id = "+str(pedido_id))
    update_value('segundo_total',totalseg, "pedido_id = "+str(pedido_id))
-   update_value('tiempo_carga',f"\'{carga}\'", "pedido_id = "+str(pedido_id))   
+   update_value('tiempo_carga',f"'\{carga}\'", "pedido_id = "+str(pedido_id))   
    
    return render_template('cheking.html', 
                              time=carga,
@@ -245,16 +246,16 @@ def completestatus():
             fone = registro[-2]
             if registro[-5] == "00:00:00":
                update_value('status_carga',True, "pedido_id = {pedido_id}")
-               control_relay().stop()
+               control_relay().start()
                if fone != '':
                  con =envia_mensagem(fone, 'Carga Completa')
                  print(con)
             else:
                seg = tiempo_a_segundos(registro[-5])
                timeformat = formatear_tiempo(seg - 60)
-               control_relay().start()
+               control_relay().stop()
                print(timeformat)
-               update_value('tiempo_carga', "\'{timeformat}\'", "pedido_id = {pedido_id}")
+               update_value('tiempo_carga', "\'{timeformat}\'", "pedido_id = "+str(pedido_id))
             print(registro)
             print(pedido_id)
 

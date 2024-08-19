@@ -34,7 +34,7 @@
 
     return retornarResto ? resto : (11 - resto >= 10 ? 0 : 11 - resto);
   }
-  function sendcheking() {
+  function sendchekingvoucher() {
     let voucher = document.querySelector("[name='voucher']").value
     const strNum = voucher.replace(/[^0-9]/g, '')
     let data = strNum.substring(4, 12)
@@ -82,7 +82,7 @@
     <div class="info-container div">
 
       <a class="button-fone  plain-text" href="/tipopagamento">Voltar</a>
-      <p class="button-fone" onclick="sendcheking()">Avançar</p>
+      <p class="button-fone" onclick="sendchekingvoucher()">Avançar</p>
     </div>
 
   </div>

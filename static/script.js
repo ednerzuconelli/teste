@@ -156,7 +156,7 @@ function addNumber(num) {
 }
 
 function pix(total, pedido_id) {
-    window.location.href = '/pix/${pedido_id}`
+    window.location.href = `/pix/${pedido_id}`
 }
 
 function completeStatusCarga() {
