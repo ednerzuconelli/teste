@@ -246,7 +246,7 @@ def completestatus():
             fone = registro[-2]
             if registro[-5] == "00:00:00":
                update_value('status_carga',True, "pedido_id = {pedido_id}")
-               control_relay().start()
+               control_relay().stop()
                if fone != '':
                  con =envia_mensagem(fone, 'Carga Completa')
                  print(con)
@@ -271,9 +271,10 @@ def cancelstatus():
    pedido_id = ultimo_registro()
    update_value('status_carga',True, f'pedido_id = {pedido_id}')
    
-   con =envia_mensagem(fone, 'Carga cancelada')
+   control_relay().start()
+   if fone != None:
+     con =envia_mensagem(fone, 'Carga cancelada')
    
-   control_relay().stop()
    if (con !=''):
       return redirect('/')
    else:
