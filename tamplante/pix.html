@@ -24,7 +24,7 @@
         document.querySelector("[name='tel']").value = text;
     }
 
-    function sendcheking() {
+    function sendchekingPix() {
         var url_atual = window.location.pathname.split('/');
         var pedido_id = url_atual[2]
         window.location.href = '/deletePix/'+ pedido_id
@@ -43,7 +43,7 @@
         </div>
         
         <p><b> R$ {{ total_pagar }} </b></p>
-        <p class="button-fone" onclick="sendcheking()">Cancelar</p>
+        <p class="button-fone" onclick="sendchekingPix()">Cancelar</p>
     </div>
     <div class="qrcode">
         <h3>Abra seu aplicativo e efetue seu pagamento via código QR</h3>
