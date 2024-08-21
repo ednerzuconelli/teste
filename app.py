@@ -63,12 +63,12 @@ def tipopagamento():
 
 @app.route('/config')
 def config():
-   config = view_config()
-   print(config)
+  # config = view_config()
+  # print(config)
    with open(getcwd() + r"/libs/atualizar.bat") as f:
      code = compile(f.read(), getcwd() + r"/libs/atualizar.py", 'exec')
      exec(code,None,None )
-   return render_template('config.html',configs=config)  
+   return render_template('config.html')  
 
 @app.route('/salvarconfig')
 def salvarconfig():
