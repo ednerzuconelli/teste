@@ -36,6 +36,26 @@
     const dataFormatada = data.toLocaleDateString('pt-BR', opcoesFormatacao).split('/');
     let soma =parseInt(dataFormatada[0])+parseInt(dataFormatada[1])
     let config = '99' + soma + '51'
+   /* se começou com 99 e o banco for virgem
+      copia o codigo apos o 99
+      confere o modulu 11
+      bate na plataforma
+      se o codigo existir puxa os dados necessarios ainda nao totalmente difinidos, mas ja sabemos que 
+      chave opempix
+      e valor hora
+      dados a mandar(datultatufon, utlatucon,dadosalt)
+      guardar no rabsparry versão, data ultima configuraao
+      plataformar me pnda as alteraçco poserior a data da ultima consulta
+
+get(data da ultima consulta)
+config
+cod, con, val
+
+9, DatUltCon, 15/08/2024
+10, CodEmp, 0001
+11, CodEqu, 001
+
+*/
 
     if (`${fone}` != '') {
       if (`${fone.replace(/\D/g, "")}` == config) {

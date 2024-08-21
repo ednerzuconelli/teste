@@ -25,7 +25,9 @@ def create_table_pedido():
             fone                TEXT,
             voucher             TEXT 
     ); ''')
-     
+
+
+          
 def execute(sql, values=None):
     try:
         conn = create_connection()
@@ -36,10 +38,16 @@ def execute(sql, values=None):
 
         print(e)
         create_table_pedido()
-       
+        create_table_config()
 
 
     #return cur.fetchall()[0]
+def create_config(codemp,chave,valor):
+    sql = '''
+    INSERT INTO config(cod, nome, valor)
+      VALUES (%s, %s, %s);
+    '''
+    execute(sql, values=(codemp,chave, valor))
 
 
 def create_pedido(date, time_c, fomatado, seg, valor, fone, voucher):
@@ -136,6 +144,7 @@ def view_pedido(pedido_id):
 
     return cur.fetchall()[0]
 
+
 def view_all():
 
     conn = create_connection()
@@ -170,6 +179,60 @@ def telefone_cadastrado(telefone):
     if row:
         return row[0]
     return None
+
+def create_table_config():
+     execute('''
+        CREATE TABLE IF NOT EXISTS config (
+            cod      SERIAL PRIMARY KEY,
+            nome      TEXT,
+            valor     TEXT
+    ); ''')
+     
+def view_config():
+    """ query pedido by id  
+    :param
+        pedido_id::: is identification pedido
+
+
+    :return list[tuple]
+    """ 
+    sql = f'SELECT * FROM config order by cod '
+    conn = create_connection()
+    cur = conn.cursor()
+    cur.execute(sql)
+
+    return cur.fetchall()
+
+def empresa_cadastrada(codemp):
+    sql = f"SELECT cod FROM config WHERE cod = '{codemp}'"
+    conn = create_connection()
+    cur = conn.cursor()
+    cur.execute(sql)
+    row = cur.fetchone()
+    if row:
+        return row[0]
+    return None
+
+def update_config(column,value,where):
+    """ Update pedido in True status
+
+    :param
+        pedido_id::: is identification pedido
+        column   ::: is column name updare
+
+    """
+    
+    sql = f""" UPDATE config 
+               SET {column} = {value}
+               WHERE {where}; 
+    """
+    print(sql)
+    conn = create_connection()
+    cur  = conn.cursor()
+    cur.execute(sql)
+    conn.commit()
+    cur.close()
+    conn.close()
 create_table_pedido()
 
 """

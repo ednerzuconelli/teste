@@ -7,22 +7,27 @@ from datetime import datetime
 from time import sleep
 from libs.relay.acrive import *
 import math
+from subprocess import Popen, PIPE
 from libs.whats import envia_mensagem
+import subprocess
 
 app = Flask(__name__)
 
-chdir('/home/kuro/change')
-app.template_folder = getcwd() + r'/tamplante' 
-app.static_folder   = getcwd() + r'/static'
+#chdir('/home/kuro/change')
+#app.template_folder = getcwd() + r'/tamplante' 
+#app.static_folder   = getcwd() + r'/static'
 
-#chdir(r"C:\\prg\\change")
-#app.template_folder = getcwd() + r'\\tamplante' 
-#app.static_folder   = getcwd() + r'\\static'
+chdir(r"C:\\prg\\change")
+app.template_folder = getcwd() + r'\\tamplante' 
+app.static_folder   = getcwd() + r'\\static'
 print(app.static_folder ,
       app.template_folder)
 
 @app.route('/')
 def home():
+   #verificar se banco virgem
+   #abrir tela de codigo empresa
+   #senao return telefone
    return render_template('fone.html')
 @app.route('/tipopagamento')
 def tipopagamento():
@@ -58,8 +63,30 @@ def tipopagamento():
 
 @app.route('/config')
 def config():
-   return render_template('test.html')  
+   config = view_config()
+   print(config)
+   with open(getcwd() + r"\libs\atualizar.bat") as f:
+     code = compile(f.read(), getcwd() + r"\libs\atualizar.py", 'exec')
+     exec(code,None,None )
+   return render_template('config.html',configs=config)  
 
+@app.route('/salvarconfig')
+def salvarconfig():
+   codemp = request.args.get('codemp')
+   chave = request.args.get('chave')
+   valor = request.args.get('valor')
+   print('codemp '+codemp)
+       
+   if codemp != None:
+     empresa = empresa_cadastrada(codemp)
+     if empresa != None:
+       con = update_config('nome',f"\'{chave}\'","cod="+str(codemp))
+       con = update_config('valor',f"\'{valor}\'","cod="+str(codemp))
+     else: con = create_config(codemp,chave,valor)
+     print(con)
+   if con =='':
+     return redirect('config.html')  
+   return redirect('/') 
 @app.route('/voucher')
 def voucher():
    pedido_id = ultimo_registro()
@@ -100,8 +127,8 @@ def deletePix(pedido_id):
    pix_id = pedido[1]
    print(pix_id)
    if pix_id != None:
-      if path.exists(".env"):   
-         config = dotenv_values(".env")
+      if path.exists("env"):   
+         config = dotenv_values("env")
          appid = config['APP_ID']
          con = delete_pix(appid,pix_id)
          if (con ==200):
@@ -159,7 +186,7 @@ def show_post():
    print(pedido_id)	
    update_value('valor',total_pagar, "pedido_id = "+str(pedido_id))
    update_value('segundo_total',totalseg, "pedido_id = "+str(pedido_id))
-   update_value('tiempo_carga',f"'\{carga}\'", "pedido_id = "+str(pedido_id))   
+   update_value('tiempo_carga',f"\'{carga}\'", "pedido_id = "+str(pedido_id))   
    
    return render_template('cheking.html', 
                              time=carga,
@@ -176,8 +203,8 @@ def pix(pedido_id):
    if total != '0.00':
      # if path.exists(".env"):   
      #    config = dotenv_values(".env")
-      if path.exists(".env"):   
-         config = dotenv_values(".env")
+      if path.exists("env"):   
+         config = dotenv_values("env")
          appid = config['APP_ID']
         
          pix = (0,pedido[1])
@@ -209,7 +236,7 @@ def pix(pedido_id):
 def pixcheck(idPix):
     def generate_data():
         #config = dotenv_values(".env")
-        config = dotenv_values(".env")
+        config = dotenv_values("env")
         appid  = config['APP_ID']
         while True:
             ultima_trastion = get_cob(appid, idPix)
@@ -243,13 +270,13 @@ def completestatus():
       while True:
             pedido_id = ultimo_registro()
             registro = view_pedido(pedido_id) 
-            fone = registro[-2]
+            #fone = registro[-2]
             if registro[-5] == "00:00:00" or registro[5] =="00:00":
                update_value('status_carga',True, "pedido_id = {pedido_id}")
                control_relay().stop()
-               if fone != '':
-                 con =envia_mensagem(fone, 'Carga Completa')
-                 print(con)
+            #   if fone != '':
+            #     con =envia_mensagem(fone, 'Carga Completa')
+            #     print(con)
             else:
                seg = tiempo_a_segundos(registro[-5])
                timeformat = formatear_tiempo(seg - 60)
@@ -272,17 +299,21 @@ def cancelstatus():
    update_value('status_carga',True, f'pedido_id = {pedido_id}')
    
    control_relay().start()
-   if fone != None:
-     con =envia_mensagem(fone, 'Carga cancelada')
+   print(fone)
+  # if fone != None:
+  #   con =envia_mensagem(fone, 'Carga cancelada')
    
-   if (con !=''):
-      return redirect('/')
-   else:
-      return render_template('error.html', num= con)
+   #if (con !=''):
+   return redirect('/')
+   #else:
+   #   return render_template('error.html', num= con)
 
 # section error
 
-  
+@app.route('/atualizagit')
+def atualizagit():
+   os.open(getcwd()+ r'\\libs\\atualizar.bat',1)
+   return redirect('/')  
 # error 
 @app.errorhandler(404)
 def not_found(e):
