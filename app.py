@@ -13,13 +13,13 @@ import subprocess
 
 app = Flask(__name__)
 
-#chdir('/home/kuro/change')
-#app.template_folder = getcwd() + r'/tamplante' 
-#app.static_folder   = getcwd() + r'/static'
+chdir('/home/kuro/change')
+app.template_folder = getcwd() + r'/tamplante' 
+app.static_folder   = getcwd() + r'/static'
 
-chdir(r"C:\\prg\\change")
-app.template_folder = getcwd() + r'\\tamplante' 
-app.static_folder   = getcwd() + r'\\static'
+#chdir(r"C:\\prg\\change")
+#app.template_folder = getcwd() + r'\\tamplante' 
+#app.static_folder   = getcwd() + r'\\static'
 print(app.static_folder ,
       app.template_folder)
 
@@ -65,8 +65,8 @@ def tipopagamento():
 def config():
    config = view_config()
    print(config)
-   with open(getcwd() + r"\libs\atualizar.bat") as f:
-     code = compile(f.read(), getcwd() + r"\libs\atualizar.py", 'exec')
+   with open(getcwd() + r"/libs/atualizar.bat") as f:
+     code = compile(f.read(), getcwd() + r"/libs/atualizar.py", 'exec')
      exec(code,None,None )
    return render_template('config.html',configs=config)  
 
@@ -127,8 +127,8 @@ def deletePix(pedido_id):
    pix_id = pedido[1]
    print(pix_id)
    if pix_id != None:
-      if path.exists("env"):   
-         config = dotenv_values("env")
+      if path.exists(".env"):   
+         config = dotenv_values(".env")
          appid = config['APP_ID']
          con = delete_pix(appid,pix_id)
          if (con ==200):
@@ -203,8 +203,8 @@ def pix(pedido_id):
    if total != '0.00':
      # if path.exists(".env"):   
      #    config = dotenv_values(".env")
-      if path.exists("env"):   
-         config = dotenv_values("env")
+      if path.exists(".env"):   
+         config = dotenv_values(".env")
          appid = config['APP_ID']
         
          pix = (0,pedido[1])
@@ -236,7 +236,7 @@ def pix(pedido_id):
 def pixcheck(idPix):
     def generate_data():
         #config = dotenv_values(".env")
-        config = dotenv_values("env")
+        config = dotenv_values(".env")
         appid  = config['APP_ID']
         while True:
             ultima_trastion = get_cob(appid, idPix)
