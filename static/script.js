@@ -47,8 +47,8 @@ function updateSendLink() {
 function updateCounter() {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    counterElement.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+   
+    counterElement.textContent = `${pad(hours)}:${pad(minutes)}`;
 }
 
 function sendcheking() {
@@ -112,21 +112,21 @@ function obtenerSegundos(tiempo) {
     let partesTiempo = tiempo.split(":");
     let horas        = parseInt(partesTiempo[0]);
     let minutos      = parseInt(partesTiempo[1]);
-    let segundos     = parseInt(partesTiempo[2]);
-    return horas * 3600 + minutos * 60 + segundos;
+    
+    return horas * 3600 + minutos * 60 ;
 }
 
 // Función para formatear los segundos en formato HH:MM:SS
 function formatearTiempo(segundos) {
     let horas = Math.floor(segundos / 3600);
     let minutos = Math.floor((segundos % 3600) / 60);
-    let segundosRestantes = segundos % 60;
+    
    
-    return `${pad(horas)}:${pad(minutos)}:${pad(segundosRestantes)}`;
+    return `${pad(horas)}:${pad(minutos)}`;
 }
 
 function resetCounter() {
-    document.getElementById("counter").textContent = '00:00:00';
+    document.getElementById("counter").textContent = '00:00';
     textoInicial = document.getElementById("counter").textContent;
     caracteres = textoInicial.split('');
     contador_t = caracteres.length -1;
