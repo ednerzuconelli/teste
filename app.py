@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Response, abort, redirect,url_for
-from os import path, getcwd, chdir,startfile
+from os import path, getcwd, chdir
 from libs.pixadd import create_cob, get_cob, delete_pix
 from libs.db import *
 from dotenv import dotenv_values
