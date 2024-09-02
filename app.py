@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Response, abort, redirect,url_for
-from os import path, getcwd, chdir
+from os import path, getcwd, chdir,startfile
 from libs.pixadd import create_cob, get_cob, delete_pix
 from libs.db import *
 from dotenv import dotenv_values
@@ -7,9 +7,9 @@ from datetime import datetime
 from time import sleep
 from libs.relay.acrive import *
 import math
-from subprocess import Popen, PIPE
-from libs.whats import envia_mensagem
-import subprocess
+from subprocess import Popen, PIPE,check_output
+#from libs.whats import envia_mensagem
+
 
 app = Flask(__name__)
 
@@ -28,6 +28,7 @@ def home():
    #verificar se banco virgem
    #abrir tela de codigo empresa
    #senao return telefone
+   
    return render_template('fone.html')
 @app.route('/tipopagamento')
 def tipopagamento():
@@ -65,9 +66,18 @@ def tipopagamento():
 def config():
   # config = view_config()
   # print(config) dffjhfgjhfg
-   with open(getcwd() + r"/libs/atualizar.bat") as f:
-     code = compile(f.read(), getcwd() + r"/libs/atualizar.bat", 'exec')
-     exec(code,None,None )
+   a = check_output(getcwd() + r'\\atualizar.bat')
+   print(a)
+  # startfile(getcwd() + r'\\atualizar.bat')
+  
+   #filepath=getcwd() + r"/libs/atualizar.bat"
+   #p = Popen(filepath, shell=True, stdout = PIPE)
+   #stdout, stderr = p.communicate()
+   #print(stdout)
+   #print( p.returncode)
+   #with open(getcwd() + r"/libs/atualizar.bat") as f:
+   #  code = compile(f.read(), getcwd() + r"/libs/atualizar.bat", 'exec')
+   #  exec(code)
    return render_template('config.html')  
 
 @app.route('/salvarconfig')

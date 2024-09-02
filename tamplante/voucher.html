@@ -63,7 +63,7 @@
           console.log(timeT.className)
         }
       } else {
-        alert("Voucher inválido, verificar");
+        alert("Voucher inválido/invalid, verificar/check");
 
       }
   //  } else {
@@ -76,13 +76,13 @@
   <div class="container ">
 
     <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
-    <h1>Informe seu Voucher</h1>
+    <h1>Voucher</h1>
     <input type="text" class="input" id="voucher" name="voucher" maxlength="20" placeholder="000.000.000.000.000">
 
     <div class="info-container div">
 
-      <a class="button-fone  plain-text" href="/tipopagamento">Voltar</a>
-      <p class="button-fone" onclick="sendchekingvoucher()">Avançar</p>
+      <a class="button-fone  plain-text" href="/tipopagamento">Voltar/Back</a>
+      <p class="button-fone" onclick="sendchekingvoucher()">Avançar/Next</p>
     </div>
 
   </div>

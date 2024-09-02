@@ -52,16 +52,16 @@
     <div class="container">
         <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
         <!--<h2>Muito obrigado pela sua escolha.</h2> -->
-        <h2 id="intruciones">Conecte o carregador ao carro</h2>
+        <h2 id="intruciones">Conecte ao carro / Connect to car</h2>
         <div class="grid-container-timer">
             <div class="counter">
                 <a  id="counter">{{ Time }}</a>
             </div>
-            <button class="button-iniciar " onclick="startcronometro()" id="startButton">Iniciar</button>
+            <button class="button-iniciar " onclick="startcronometro()" id="startButton">Iniciar/Start</button>
         </div>
-        <h3 id="intruciones">Para encerrar preecha seu telefone.</h3>
+        <h3 id="intruciones">Telefone/Fone</h3>
         <input type="tel" class="input-timer" id="tel" name="tel" maxlength="15" placeholder="(00) 00000-0000">
-        <button onclick="encerrar('{{ Fone }}')" class="button-encerrar">Encerrar</button>
+        <button onclick="encerrar('{{ Fone }}')" class="button-encerrar">Encerrar/Close</button>
 
 
     </div>

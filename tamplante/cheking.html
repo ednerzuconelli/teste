@@ -23,15 +23,15 @@
     <div class="forma-pagamento">
     <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
     <div class="center">
-        <h2>Informação de pagamento</h2>
+        <h2>Informação do pagamento / Payment information</h2>
 
     </div>
 
     <div class="info-container text-1">
 
         <div>
-            <p>Tempo de carregamento: </p>
-            <p>Montante a ser pago:</p>
+            <p>Tempo / Time: </p>
+            <p>Valor / Value:</p>
         </div>
         <div>
             <p><b>{{ time }}</b></p>
@@ -39,18 +39,18 @@
         </div>
     </div>
     <div class="center">
-        <h3>Escolha a forma de pagamento</h3>
+        <h3>Forma de pagamento / Payment method</h3>
 
     </div>
 
 </div>
     <div class=" buttons-checking">
 
-        <a class="button-fone  plain-text" href="/tempo">Voltar</a>
+        <a class="button-fone  plain-text" href="/tempo">Voltar/Back</a>
 
         <button class="button-fone" onclick="pix({{ total }}, {{ pedido_id }})">Pix</button>
 
-        <button class="button-fone plain-text" onclick="carton({{total}},{{pedido_id}})">Cartão</button>
+        <button class="button-fone plain-text" onclick="carton({{total}},{{pedido_id}})">Cartão/Carton</button>
 
     </div>
 </div>
