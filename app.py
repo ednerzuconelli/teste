@@ -262,6 +262,7 @@ def pixcheck(idPix):
 @app.route('/complete')
 def completestatus():
    def tiempo_a_segundos(tiempo):
+      print(tiempo)
       horas, minutos = tiempo.split(':')
       total_segundos = int(horas) * 3600 + int(minutos) * 60 
       return total_segundos
@@ -280,15 +281,17 @@ def completestatus():
       while True:
             pedido_id = ultimo_registro()
             registro = view_pedido(pedido_id) 
+            temBan =  registro[5]
+            print(temBan)
             #fone = registro[-2]
-            if registro[-5] == "00:00:00" or registro[5] =="00:00":
+            if temBan == "00:00:00" or temBan =="00:00":
                update_value('status_carga',True, "pedido_id = {pedido_id}")
                control_relay().stop()
             #   if fone != '':
             #     con =envia_mensagem(fone, 'Carga Completa')
             #     print(con)
             else:
-               seg = tiempo_a_segundos(registro[-5])
+               seg = tiempo_a_segundos(temBan)
                timeformat = formatear_tiempo(seg - 60)
                control_relay().stop()
                print(timeformat)
