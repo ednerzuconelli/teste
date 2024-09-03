@@ -159,8 +159,8 @@ def timer(pedido_id):
          tempo = int(voucher[12: 14])
          hora = math.floor((tempo * 10) / 60);
          minutos = (tempo * 10) % 60;
-         carga = "{:02d}:{:02d}:{:02d}".format(
-                          int(hora), int(minutos), int('0'))
+         carga = "{:02d}:{:02d}".format(
+                          int(hora), int(minutos))
          update_value('tiempo_carga',f"\'{carga}\'", "pedido_id = "+str(pedido_id))   
          update_value('voucher',f"\'{voucher}\'", "pedido_id = "+str(pedido_id))
       print(start)

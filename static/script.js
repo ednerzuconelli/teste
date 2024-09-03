@@ -33,9 +33,9 @@ function resetTime() {
 function updateSendLink() {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    if (`${seconds}` != '00' || `${minutes}` != '00' || `${hours}` != '00') {
-          sendLinkElement.href = `cheking?hours=${hours}&min=${minutes}&seg=${seconds}`;
+   
+    if (`${minutes}` != '00' || `${hours}` != '00') {
+          sendLinkElement.href = `cheking?hours=${hours}&min=${minutes}`;
 
 
     } else {
@@ -58,9 +58,9 @@ function sendcheking() {
 
     const hours = pad(Math.floor(totalSeconds / 3600));
     const minutes = pad(Math.floor((totalSeconds % 3600) / 60));
-    const seconds = pad(totalSeconds % 60);
-    if (`${seconds}` != '00' || `${minutes}` != '00' || `${hours}` != '00') {
-        window.location.href = `cheking?hours=${hours}&min=${minutes}&seg=${seconds}`
+    
+    if (`${minutes}` != '00' || `${hours}` != '00') {
+        window.location.href = `cheking?hours=${hours}&min=${minutes}`
 
     } else {
         timeT.classList.add('red');
