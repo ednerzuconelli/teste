@@ -91,7 +91,7 @@ function actualizarContador() {
             }
             window.location.href = '/';
         }
-        setInterval(contador, 1000);
+        setInterval(contador, 60000);
 
     }
 }
@@ -104,7 +104,7 @@ function toggleContador() {
         return;
     }
     // Si el contador está detenido, iniciarlo
-    intervalo = setInterval(actualizarContador, 1000);
+    intervalo = setInterval(actualizarContador, 60000);
 }
 
 // Función para convertir el tiempo en formato HH:MM:SS a segundos
@@ -195,7 +195,7 @@ function iniciarCronometro() {
     console.log("Cronómetro iniciado");
     actualizarCronometro(); // Llamar a la función una vez para que comience inmediatamente
     completeStatusCarga()
-    return setInterval(actualizarCronometro, 900);
+    return setInterval(actualizarCronometro, 2000);
 }
 function startcronometro() {
     // Cuando se hace clic en el botón, se inicia el cronómetro

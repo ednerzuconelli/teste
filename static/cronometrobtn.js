@@ -26,7 +26,7 @@ function actualizarCronometro() {
 function iniciarCronometro() {
     console.log("Cronómetro iniciado");
     actualizarCronometro(); // Llamar a la función una vez para que comience inmediatamente
-    return setInterval(actualizarCronometro, 1000);
+    return setInterval(actualizarCronometro, 60000);
 }
 
 document.getElementById('startButton').addEventListener('click', function() {
