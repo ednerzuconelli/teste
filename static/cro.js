@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Formatear los valores para asegurar dos dígitos
         var hoursStr   = ('0' + hours).slice(-2);
         var minutesStr = ('0' + minutes).slice(-2);
-        var secondsStr = ('0' + seconds).slice(-2);
-
+        
         var timeString = hoursStr + ':' + minutesStr;
         display.textContent = timeString;
         tiempoInicial--; // Decrementar el tiempo

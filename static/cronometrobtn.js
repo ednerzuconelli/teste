@@ -8,8 +8,8 @@ function actualizarCronometro() {
         let partesTiempo = tiempo.split(":");
         let horas = parseInt(partesTiempo[0]);
         let minutos = parseInt(partesTiempo[1]);
-        let segundos = parseInt(partesTiempo[2]);
-        return horas * 3600 + minutos * 60 + segundos;
+       
+        return horas * 3600 + minutos * 60 ;
     }
     
     let totalseg = obtenerSegundos(counterElement.textContent); // Obtener el contenido del elemento
