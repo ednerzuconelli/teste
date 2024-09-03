@@ -23,5 +23,5 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Actualizar el cronómetro cada segundo
-    var intervalo = setInterval(actualizarCronometro, 1000);
+    var intervalo = setInterval(actualizarCronometro, 60000);
 });
