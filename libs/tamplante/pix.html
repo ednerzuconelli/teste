@@ -1,0 +1,71 @@
+
+{% extends "base.html" %}
+{% block title %}Pix{% endblock %}
+{% block head %}
+{{ super() }}
+
+<script>
+
+    function inserir(numero) {
+        let text = document.querySelector("[name='tel']").value + numero;
+        text = text.replace(/\D/g, "")
+        text = text.replace(/(\d{2})(\d)/, "($1) $2")
+        text = text.replace(/(\d)(\d{4})$/, "$1-$2")
+        text = text.substring(0, 15)
+
+        document.querySelector("[name='tel']").value = text;
+    }
+    function deletarUltimo() {
+        let text = document.querySelector("[name='tel']").value;
+        document.querySelector("[name='tel']").value = text.substring(0, text.length - 1);
+    }
+    function reset() {
+        let text = '';
+        document.querySelector("[name='tel']").value = text;
+    }
+
+    function sendchekingPix() {
+        var url_atual = window.location.pathname.split('/');
+        var pedido_id = url_atual[2]
+        window.location.href = '/deletePix/'+ pedido_id
+    }
+</script>
+
+{% endblock %}
+{% block content %}
+<div class="grid-container">
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+
+        <div  class="counter">
+            <p id="display">00:59:00</p>
+
+        </div>
+        
+        <p><b> R$ {{ total_pagar }} </b></p>
+        <p class="button-fone" onclick="sendchekingPix()">Cancelar/Cancel</p>
+    </div>
+    <div class="qrcode">
+       <!-- <h3>Abra seu aplicativo e efetue seu pagamento via código QR</h3> -->
+        <img src="{{ img }}" class="qr" alt="">
+
+    </div>
+</div>
+    <script src="{{ url_for('static', filename='cro.js') }}"></script>
+
+   
+    <script>
+        const eventSource = new EventSource('/pixcheck/{{ ID }}');
+
+        eventSource.onmessage = function(event) {
+            const newData = document.createElement('div');
+            newData.textContent = 'Server Time: ' + event.data;
+            if ( event.data === 'COMPLETED'){
+                window.location.href = '/timer/{{ pedido_id }}'
+            }
+        };
+    </script>
+
+
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Config{% endblock %}
+{% block head %}
+{{ super() }}
+<meta charset="UTF-8">
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+
+
+<script>
+
+  
+  function sendcheking1() {
+    let codigo = document.querySelector("[name='codigo']").value
+    let chave = document.querySelector("[name='chave']").value
+    let valor = document.querySelector("[name='valor']").value
+    console.log('codigo ' + codigo)
+    if (`${codigo}` != '') {
+      window.location.href = `/salvarconfig?codemp=${codigo}&chave=${chave}&valor=${valor}`;
+    } else {
+      timeT.classList.add('red');
+      console.log(timeT.className)
+    }
+  }
+  function atualizar() {
+    window.location.href = '/atualizagit'
+  }
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <img src="{{ url_for('static', filename='logo/mobility.svg') }}" alt="Imagen" class="image">
+  <div class="grid-container">
+    <p>Codigo da Empresa:</p>
+    <input type="text" class="input" id="codigo" name="codigo" maxlength="15">
+  </div>
+ <!-- <div class="grid-container">
+    <p>Chave:</p>
+    <input type="text" class="input" id="chave" name="chave" maxlength="15">
+  </div>
+  <div class="grid-container">
+    <p>Valor:</p>
+
+    <input type="text" class="input" id="valor" name="valor" maxlength="15">
+  </div>
+-->
+  <a onclick="sendcheking1()" class="button center plain-text ">Salvar</a>
+  <a onclick="atualizar()" class="center plain-text ">Atualizar</a>
+
+
+</div>
+
+<script>
+
+</script>
+
+{% endblock %}
